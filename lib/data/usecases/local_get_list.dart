@@ -13,24 +13,21 @@ class LocalGetLists implements GetListsUsecase {
   @override
   Future<List<ShoppingListEntity>?> getAll() async {
     try {
-      List<String>? allKeys = jsonDecode(await cacheStorage.fetch("allKeys"));
+      var listOfKeys = await cacheStorage.fetch("allKeys");
+      if (listOfKeys == null) return null;
 
-      if (allKeys == null) {
-        return null;
-      } else {
-        List<ShoppingListEntity> list = List.empty();
+      List<dynamic> allKeys = jsonDecode(listOfKeys);
+      List<ShoppingListEntity> list = [];
 
-        for (var key in allKeys) {
-          String? jsonList = await cacheStorage.fetch(key);
-          if (jsonList != null) {
-            list.add(ShoppingListEntity.fromJson(jsonList));
-          } else {
-            log("Não foi possível encontrar a lista cujo ID é $key");
-          }
+      for (var key in allKeys) {
+        String? jsonList = await cacheStorage.fetch(key.toString());
+        if (jsonList != null) {
+          list.add(ShoppingListEntity.fromJson(jsonList));
+        } else {
+          log("Não foi possível encontrar a lista cujo ID é $key");
         }
-
-        return list;
       }
+      return list;
     } catch (e) {
       throw Exception("Não foi possível listar todas as listas");
     }
