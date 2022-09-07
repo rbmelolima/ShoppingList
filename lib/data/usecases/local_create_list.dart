@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shoppinglist/data/cache/cache.dart';
 import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/domain/usecases/create_list_usecase.dart';
@@ -10,27 +12,21 @@ class LocalCreateList implements CreateListUsecase {
   @override
   Future<void> create(ShoppingListEntity shoppingList) async {
     try {
-      await _handleCacheLists(shoppingList.id);
+      var allKeys = await cacheStorage.fetch("allKeys");
+      if (allKeys == null) {
+        cacheStorage.save(key: "allKeys", value: jsonEncode([shoppingList.id]));
+      } else {
+        List<dynamic> dic = jsonDecode(allKeys);
+        dic.add(shoppingList.id);
+        cacheStorage.save(key: "allKeys", value: jsonEncode(dic));
+      }
+
       await cacheStorage.save(
         key: shoppingList.id,
-        value: shoppingList.toMap(),
+        value: shoppingList.toJson(),
       );
     } catch (e) {
       throw Exception("Não foi possível criar uma lista de compras");
-    }
-  }
-
-  Future<void> _handleCacheLists(String shoppingListId) async {
-    var all = await cacheStorage.fetch("all_shopping_lists");
-    if (all == null) {
-      await cacheStorage.save(
-        key: "all_shopping_lists",
-        value: [shoppingListId],
-      );
-    } else {
-      all as List;
-      all.add(shoppingListId);
-      await cacheStorage.save(key: "all_shopping_lists", value: all);
     }
   }
 }
