@@ -45,7 +45,7 @@ ThemeData defaultTheme() {
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: const Color.fromRGBO(33, 33, 33, 0.03),
+      fillColor: const Color.fromRGBO(33, 33, 33, 0.05),
       hintStyle: AppText.input(
         const Color.fromRGBO(0, 0, 0, 0.6),
       ),
@@ -53,18 +53,21 @@ ThemeData defaultTheme() {
         borderRadius: BorderRadius.circular(8.0),
         borderSide: const BorderSide(
           color: Colors.transparent,
+          width: 2,
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: BorderSide(
           color: AppColors.primary,
+          width: 2,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: const BorderSide(
           color: Colors.transparent,
+          width: 2,
         ),
       ),
     ),
