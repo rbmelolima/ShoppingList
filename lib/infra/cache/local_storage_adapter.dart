@@ -7,11 +7,11 @@ class LocalStorageAdapter implements CacheStorage {
 
   LocalStorageAdapter({required this.localStorage});
 
-  Future<bool> isReady() async => await localStorage.ready;
+  Future<bool> _isReady() async => await localStorage.ready;
 
   @override
   Future<void> save({required String key, required dynamic value}) async {
-    var ready = await isReady();
+    var ready = await _isReady();
 
     if (ready) {
       await localStorage.deleteItem(key);
@@ -21,7 +21,7 @@ class LocalStorageAdapter implements CacheStorage {
 
   @override
   Future<void> delete(String key) async {
-    var ready = await isReady();
+    var ready = await _isReady();
 
     if (ready) {
       await localStorage.deleteItem(key);
@@ -30,7 +30,7 @@ class LocalStorageAdapter implements CacheStorage {
 
   @override
   Future<void> deleteAll() async {
-    var ready = await isReady();
+    var ready = await _isReady();
 
     if (ready) {
       await localStorage.clear();
@@ -39,7 +39,7 @@ class LocalStorageAdapter implements CacheStorage {
 
   @override
   Future<dynamic> fetch(String key) async {
-    var ready = await isReady();
+    var ready = await _isReady();
 
     if (ready) {
       return await localStorage.getItem(key);
