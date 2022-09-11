@@ -6,7 +6,10 @@ class LocalStorageSpy extends Mock implements LocalStorage {
     mockDelete();
     mockDeleteAll();
     mockSave();
+    mockIsReady();
   }
+
+  void mockIsReady() => when(() => ready).thenAnswer((_) async => true);
 
   When mockDeleteCall() => when(() => deleteItem(any()));
   void mockDelete() => mockDeleteCall().thenAnswer((_) async => _);

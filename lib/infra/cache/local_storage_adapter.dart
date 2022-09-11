@@ -7,24 +7,42 @@ class LocalStorageAdapter implements CacheStorage {
 
   LocalStorageAdapter({required this.localStorage});
 
+  Future<bool> isReady() async => await localStorage.ready;
+
   @override
   Future<void> save({required String key, required dynamic value}) async {
-    await localStorage.deleteItem(key);
-    await localStorage.setItem(key, value);
+    var ready = await isReady();
+
+    if (ready) {
+      await localStorage.deleteItem(key);
+      await localStorage.setItem(key, value);
+    }
   }
 
   @override
   Future<void> delete(String key) async {
-    await localStorage.deleteItem(key);
+    var ready = await isReady();
+
+    if (ready) {
+      await localStorage.deleteItem(key);
+    }
   }
 
   @override
   Future<void> deleteAll() async {
-    await localStorage.clear();
+    var ready = await isReady();
+
+    if (ready) {
+      await localStorage.clear();
+    }
   }
 
   @override
   Future<dynamic> fetch(String key) async {
-    return await localStorage.getItem(key);
+    var ready = await isReady();
+
+    if (ready) {
+      return await localStorage.getItem(key);
+    }
   }
 }
