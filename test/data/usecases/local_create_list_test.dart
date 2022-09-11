@@ -76,7 +76,7 @@ void main() {
       ).called(1);
 
       verify(
-        () => spy.save(key: shoppingList.id, value: shoppingList.toJson()),
+        () => spy.save(key: shoppingList.id, value: shoppingList),
       ).called(1);
     },
   );
