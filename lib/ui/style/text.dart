@@ -17,11 +17,11 @@ class AppText {
   static TextStyle h5(Color? color) => _title(color, 18);
 
   /// Style for paragraphs
-  static TextStyle p(Color? color) {
+  static TextStyle p(Color? color, [double fontSize = 16]) {
     return TextStyle(
       fontFamily: "PT Sans",
       fontWeight: FontWeight.w400,
-      fontSize: 16,
+      fontSize: fontSize,
       color: color,
     );
   }
