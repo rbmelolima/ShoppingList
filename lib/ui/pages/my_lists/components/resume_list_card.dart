@@ -9,13 +9,15 @@ class ResumeListCard extends StatefulWidget {
   final String name;
   final List<ProductEntity>? products;
   final int? lenght;
+  final Function onDelete;
 
-  const ResumeListCard({
-    Key? key,
-    required this.name,
-    this.products,
-    this.lenght,
-  }) : super(key: key);
+  const ResumeListCard(
+      {Key? key,
+      required this.name,
+      this.products,
+      this.lenght,
+      required this.onDelete})
+      : super(key: key);
 
   @override
   State<ResumeListCard> createState() => _ResumeListCardState();
@@ -119,6 +121,7 @@ class _ResumeListCardState extends State<ResumeListCard> {
     return <PopupMenuEntry<Options>>[
       PopupMenuItem<Options>(
         value: Options.delete,
+        onTap: () => widget.onDelete(),
         child: Row(
           children: [
             Container(

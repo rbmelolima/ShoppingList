@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,12 @@ import 'package:shoppinglist/domain/usecases/usecases.dart';
 class MyListsPresenter {
   final GetListsUsecase getUsecase;
   final CreateListUsecase createUsecase;
+  final DeleteListUsecase deleteUsecase;
 
   MyListsPresenter({
     required this.getUsecase,
     required this.createUsecase,
+    required this.deleteUsecase,
   });
 
   // Armazenar e fornecer todas as listas
@@ -32,6 +35,15 @@ class MyListsPresenter {
     }
   }
 
+  Future<void> deleteList(String id) async {
+    try {
+      await deleteUsecase.delete(id);
+      await getAllLists();
+    } catch (e) {
+      log("Não foi possível deletar a lista $id");
+    }
+  }
+
   Future<void> create() async {
     try {
       ShoppingListEntity newList = ShoppingListEntity(
@@ -43,7 +55,11 @@ class MyListsPresenter {
         products: [],
         tags: [],
       );
-      await createUsecase.create(newList);
+
+      await Future.delayed(const Duration(seconds: 2), () async {
+        await createUsecase.create(newList);
+        await getAllLists();
+      });
     } catch (e) {
       throw Exception("Não foi possível criar a lista");
     } finally {

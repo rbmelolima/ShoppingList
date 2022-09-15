@@ -50,6 +50,7 @@ void main() {
     () async {
       spy.mockFetch("allKeys", jsonEncode(["id01"]));
       spy.mockSave();
+      spy.mockDelete();
       await sut.create(shoppingList);
       verify(
         () => spy.save(
@@ -66,6 +67,8 @@ void main() {
     () async {
       spy.mockFetch("allKeys", jsonEncode(["id01"]));
       spy.mockSave();
+      spy.mockDelete();
+
       await sut.create(shoppingList);
       verify(
         () => spy.save(

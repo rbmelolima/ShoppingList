@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../data/cache/cache.dart';
 
 import 'package:localstorage/localstorage.dart';
@@ -14,8 +16,9 @@ class LocalStorageAdapter implements CacheStorage {
     var ready = await _isReady();
 
     if (ready) {
-      await localStorage.deleteItem(key);
       await localStorage.setItem(key, value);
+    } else {
+      log("@lsError LocalStorage is not ready");
     }
   }
 
@@ -25,6 +28,8 @@ class LocalStorageAdapter implements CacheStorage {
 
     if (ready) {
       await localStorage.deleteItem(key);
+    } else {
+      log("@lsError LocalStorage is not ready");
     }
   }
 
@@ -34,6 +39,8 @@ class LocalStorageAdapter implements CacheStorage {
 
     if (ready) {
       await localStorage.clear();
+    } else {
+      log("@lsError LocalStorage is not ready");
     }
   }
 
@@ -43,6 +50,8 @@ class LocalStorageAdapter implements CacheStorage {
 
     if (ready) {
       return await localStorage.getItem(key);
+    } else {
+      log("@lsError LocalStorage is not ready");
     }
   }
 }

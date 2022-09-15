@@ -15,6 +15,7 @@ class LocalDeleteList implements DeleteListUsecase {
       if (allKeys != null) {
         List<dynamic> dic = jsonDecode(allKeys);
         dic.remove(shoppingListId);
+        await cacheStorage.delete("allKeys");
         await cacheStorage.save(key: "allKeys", value: jsonEncode(dic));
       }
 

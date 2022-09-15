@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/ui/helpers/helpers.dart';
@@ -36,6 +38,9 @@ class MyListsPage extends StatelessWidget {
                     return const CircularProgressIndicator(); // Loading Widget
                   case ConnectionState.active:
                   case ConnectionState.done:
+                    if (snapshot.data!.isEmpty) {
+                      return const ShoppingList404();
+                    }
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
                       child: ListView.builder(
@@ -46,6 +51,11 @@ class MyListsPage extends StatelessWidget {
                             name: snapshot.data![index].name,
                             lenght: snapshot.data![index].products.length,
                             products: snapshot.data![index].products,
+                            onDelete: () async {
+                              await presenter.deleteList(
+                                snapshot.data![index].id,
+                              );
+                            },
                           );
                         },
                       ),
@@ -106,7 +116,8 @@ class MyListsPage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 32, bottom: 16),
                     child: TextField(
-                      textInputAction: TextInputAction.none,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => onCloseKeyboard(context),
                       controller: presenter.createListName,
                       maxLines: 1,
                       onChanged: (_) {
@@ -173,5 +184,13 @@ class MyListsPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void onCloseKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }

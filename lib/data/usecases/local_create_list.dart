@@ -19,6 +19,7 @@ class LocalCreateList implements CreateListUsecase {
       } else {
         List<dynamic> dic = jsonDecode(allKeys);
         dic.add(shoppingList.id);
+        await cacheStorage.delete("allKeys");
         await cacheStorage.save(key: "allKeys", value: jsonEncode(dic));
       }
 

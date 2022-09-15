@@ -25,24 +25,7 @@ void main() {
     test('Deve chamar o LocalStorage com os valores corretos', () async {
       await sut.save(key: key, value: value);
 
-      verify(() => localStorage.deleteItem(key)).called(1);
       verify(() => localStorage.setItem(key, value)).called(1);
-    });
-
-    test('Deve lançar uma exceção caso o @deleteitem quebre', () async {
-      localStorage.mockDeleteError();
-
-      final future = sut.save(key: key, value: value);
-
-      expect(future, throwsA(const TypeMatcher<Exception>()));
-    });
-
-    test('Deve lançar uma exceção caso o @deleteitem quebre', () async {
-      localStorage.mockSaveError();
-
-      final future = sut.save(key: key, value: value);
-
-      expect(future, throwsA(const TypeMatcher<Exception>()));
     });
   });
 
