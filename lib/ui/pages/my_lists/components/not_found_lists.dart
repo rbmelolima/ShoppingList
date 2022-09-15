@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/ui/style/style.dart';
 
-class ShoppingList404 extends StatelessWidget {
-  const ShoppingList404({
+class NotFoundLists extends StatelessWidget {
+  const NotFoundLists({
     Key? key,
   }) : super(key: key);
 

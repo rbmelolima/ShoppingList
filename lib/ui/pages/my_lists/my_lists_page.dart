@@ -39,7 +39,7 @@ class MyListsPage extends StatelessWidget {
                   case ConnectionState.active:
                   case ConnectionState.done:
                     if (snapshot.data!.isEmpty) {
-                      return const ShoppingList404();
+                      return const NotFoundLists();
                     }
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
@@ -62,7 +62,7 @@ class MyListsPage extends StatelessWidget {
                     ); // Constructive Widget
                 }
               } else {
-                return const ShoppingList404();
+                return const NotFoundLists();
               }
             },
           );
