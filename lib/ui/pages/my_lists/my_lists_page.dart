@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/main/routes/routes.dart';
 import 'package:shoppinglist/ui/helpers/helpers.dart';
 import 'package:shoppinglist/ui/pages/my_lists/my_lists.dart';
 import 'package:shoppinglist/ui/style/style.dart';
@@ -150,12 +151,17 @@ class MyListsPage extends StatelessWidget {
                                     setState(() {
                                       btnState = ButtonState.loading;
                                     });
-                                    await presenter.create();
+                                    var list = await presenter.create();
                                     setState(() {
                                       btnState = ButtonState.enable;
                                     });
                                     if (!mounted) return;
-                                    Navigator.pop(context);
+
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.listDetails,
+                                      arguments: list,
+                                    ).then((value) => Navigator.pop(context));
                                   } catch (e) {
                                     if (!mounted) return;
                                     Navigator.pop(context);

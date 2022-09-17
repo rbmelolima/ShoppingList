@@ -44,7 +44,7 @@ class MyListsPresenter {
     }
   }
 
-  Future<void> create() async {
+  Future<ShoppingListEntity> create() async {
     try {
       ShoppingListEntity newList = ShoppingListEntity(
         createdAt: DateTime.now().toString(),
@@ -60,6 +60,8 @@ class MyListsPresenter {
         await createUsecase.create(newList);
         await getAllLists();
       });
+
+      return newList;
     } catch (e) {
       throw Exception("Não foi possível criar a lista");
     } finally {
