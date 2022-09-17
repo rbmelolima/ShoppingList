@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/ui/helpers/helpers.dart';
@@ -48,9 +46,7 @@ class MyListsPage extends StatelessWidget {
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return ResumeListCard(
-                            name: snapshot.data![index].name,
-                            lenght: snapshot.data![index].products.length,
-                            products: snapshot.data![index].products,
+                            list: snapshot.data![index],
                             onDelete: () async {
                               await presenter.deleteList(
                                 snapshot.data![index].id,

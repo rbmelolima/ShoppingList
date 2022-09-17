@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:shoppinglist/domain/entities/product_entity.dart';
+import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/ui/style/color.dart';
 import 'package:shoppinglist/ui/style/text.dart';
 
 enum Options { copy, delete, share }
 
 class ResumeListCard extends StatefulWidget {
-  final String name;
-  final List<ProductEntity>? products;
-  final int? lenght;
+  final ShoppingListEntity list;
+
   final Function onDelete;
 
-  const ResumeListCard(
-      {Key? key,
-      required this.name,
-      this.products,
-      this.lenght,
-      required this.onDelete})
-      : super(key: key);
+  const ResumeListCard({
+    Key? key,
+    required this.list,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   State<ResumeListCard> createState() => _ResumeListCardState();
@@ -25,10 +22,10 @@ class ResumeListCard extends StatefulWidget {
 
 class _ResumeListCardState extends State<ResumeListCard> {
   String getListOfProducts() {
-    var prod = widget.products;
+    var prod = widget.list.products;
     String names = "";
 
-    if (prod != null) {
+    if (prod.isNotEmpty) {
       for (var i = 0; i < prod.length; i++) {
         if (i != prod.length - 1) {
           names += "${prod[i].name}, ";
@@ -43,7 +40,7 @@ class _ResumeListCardState extends State<ResumeListCard> {
 
   @override
   Widget build(BuildContext context) {
-    bool hasProducts = widget.products != null && widget.products!.isNotEmpty;
+    bool hasProducts = widget.list.products.isNotEmpty;
 
     return Container(
       width: double.maxFinite,
@@ -72,21 +69,24 @@ class _ResumeListCardState extends State<ResumeListCard> {
               children: [
                 Expanded(
                   flex: 4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.name,
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      if (hasProducts)
+                  child: InkWell(
+                    onTap: () {},
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          getListOfProducts(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          widget.list.name,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
-                    ],
+                        if (hasProducts)
+                          Text(
+                            getListOfProducts(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
                 const Spacer(),
@@ -96,7 +96,6 @@ class _ResumeListCardState extends State<ResumeListCard> {
                     size: 18,
                     color: AppColors.black01,
                   ),
-                  onSelected: (value) {},
                   itemBuilder: (context) => _generatePopupItensList,
                 ),
               ],
@@ -106,7 +105,7 @@ class _ResumeListCardState extends State<ResumeListCard> {
                 margin: const EdgeInsets.only(top: 12),
                 child: Chip(
                   label: Text(
-                    widget.lenght!.toString() + " itens".toUpperCase(),
+                    widget.list.products.toString() + " itens".toUpperCase(),
                   ),
                   backgroundColor: AppColors.primaryLight,
                 ),

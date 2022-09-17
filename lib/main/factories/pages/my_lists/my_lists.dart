@@ -1,1 +1,1 @@
-export './my_lists_page.dart';
+export 'my_lists_page_factory.dart';
