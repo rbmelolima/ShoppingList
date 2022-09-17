@@ -7,6 +7,7 @@ ThemeData defaultTheme() {
     primaryColorDark: AppColors.primaryDark,
     primaryColorLight: AppColors.primaryLight,
     backgroundColor: AppColors.backgroundScaffold,
+    scaffoldBackgroundColor: AppColors.backgroundScaffold,
     appBarTheme: AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.primary,
