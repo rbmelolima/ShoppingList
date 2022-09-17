@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/main/routes/routes.dart';
 import 'package:shoppinglist/ui/style/color.dart';
 import 'package:shoppinglist/ui/style/text.dart';
 
@@ -70,7 +71,13 @@ class _ResumeListCardState extends State<ResumeListCard> {
                 Expanded(
                   flex: 4,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.listDetails,
+                        arguments: widget.list,
+                      );
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
