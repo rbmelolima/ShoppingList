@@ -42,19 +42,25 @@ class MyListsPage extends StatelessWidget {
                     }
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return ResumeListCard(
-                            list: snapshot.data![index],
-                            onDelete: () async {
-                              await presenter.deleteList(
-                                snapshot.data![index].id,
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.length,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return ResumeListCard(
+                                list: snapshot.data![index],
+                                onDelete: () async {
+                                  await presenter.deleteList(
+                                    snapshot.data![index].id,
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
+                          ),
+                          _buildWhiteSpace(),
+                        ],
                       ),
                     ); // Constructive Widget
                 }
@@ -80,6 +86,8 @@ class MyListsPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildWhiteSpace() => Container(height: 96);
 
   dynamic onCreateList(BuildContext context) {
     presenter.onCleanText();
