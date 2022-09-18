@@ -63,61 +63,54 @@ class _ResumeListCardState extends State<ResumeListCard> {
           vertical: 16,
           horizontal: 14,
         ),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.listDetails,
-                        arguments: widget.list,
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.list.name,
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        if (hasProducts)
-                          Text(
-                            getListOfProducts(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                      ],
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.listDetails,
+                  arguments: widget.list,
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.list.name,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  if (hasProducts) ...[
+                    Text(
+                      getListOfProducts(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
-                  ),
-                ),
-                const Spacer(),
-                PopupMenuButton<Options>(
-                  child: Icon(
-                    Icons.more_vert_outlined,
-                    size: 18,
-                    color: AppColors.black01,
-                  ),
-                  itemBuilder: (context) => _generatePopupItensList,
-                ),
-              ],
+                    Container(
+                      margin: const EdgeInsets.only(top: 12),
+                      child: Chip(
+                        label: Text(
+                          widget.list.products.length.toString() +
+                              " itens".toUpperCase(),
+                        ),
+                        backgroundColor: AppColors.primaryLight,
+                      ),
+                    )
+                  ]
+                ],
+              ),
             ),
-            if (hasProducts)
-              Container(
-                margin: const EdgeInsets.only(top: 12),
-                child: Chip(
-                  label: Text(
-                    widget.list.products.length.toString() +
-                        " itens".toUpperCase(),
-                  ),
-                  backgroundColor: AppColors.primaryLight,
-                ),
-              )
+            const Spacer(),
+            PopupMenuButton<Options>(
+              child: Icon(
+                Icons.more_vert_outlined,
+                size: 18,
+                color: AppColors.black01,
+              ),
+              itemBuilder: (context) => _generatePopupItensList,
+            ),
           ],
         ),
       ),
