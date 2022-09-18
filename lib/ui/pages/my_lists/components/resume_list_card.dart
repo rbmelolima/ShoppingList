@@ -112,7 +112,8 @@ class _ResumeListCardState extends State<ResumeListCard> {
                 margin: const EdgeInsets.only(top: 12),
                 child: Chip(
                   label: Text(
-                    widget.list.products.toString() + " itens".toUpperCase(),
+                    widget.list.products.length.toString() +
+                        " itens".toUpperCase(),
                   ),
                   backgroundColor: AppColors.primaryLight,
                 ),
