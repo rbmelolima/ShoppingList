@@ -19,7 +19,7 @@ ThemeData defaultTheme() {
       headline3: AppText.h3(AppColors.black01),
       headline4: AppText.h4(AppColors.black01),
       headline5: AppText.h5(AppColors.black01),
-      bodyText1: AppText.p(AppColors.black01),
+      bodyText1: AppText.p(AppColors.black03),
       button: AppText.btn(AppColors.black01),
     ),
     buttonTheme: const ButtonThemeData(
