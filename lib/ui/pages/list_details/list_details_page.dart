@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/ui/pages/list_details/components/components.dart';
@@ -6,6 +8,8 @@ import 'package:shoppinglist/ui/style/style.dart';
 
 import './list_details_presenter.dart';
 import '../../components/leading_btn.dart';
+
+enum Options { clone, delete, share }
 
 class ListDetailsPage extends StatefulWidget {
   final ListDetailsPresenter presenter;
@@ -52,7 +56,10 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           children: [
             _buildHeader(context),
             if (list.products.isEmpty) ...[
-              const NotFoundProducts(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: const NotFoundProducts(),
+              )
             ] else ...[
               ListView.builder(
                 itemCount: list.products.length,
@@ -136,14 +143,98 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
             ),
           ),
           const Spacer(),
-          IconButton(
-            onPressed: () {},
-            padding: const EdgeInsets.all(0),
+          PopupMenuButton<Options>(
             icon: const Icon(Icons.settings),
-            splashRadius: 24,
-          )
+            itemBuilder: (context) => _generatePopupItensList,
+          ),
         ],
       ),
     );
+  }
+
+  List<PopupMenuEntry<Options>> get _generatePopupItensList {
+    return <PopupMenuEntry<Options>>[
+      PopupMenuItem<Options>(
+        value: Options.delete,
+        onTap: () async {
+          try {
+            await widget.presenter.delete(list.id);
+            if (mounted) {
+              Navigator.pop(context);
+            }
+          } catch (e) {
+            log(e.toString());
+          }
+        },
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              child: const Icon(
+                Icons.delete,
+                color: Color(0xFF8e8e8e),
+              ),
+            ),
+            Text(
+              'Excluir',
+              style: AppText.popup(AppColors.black02),
+            ),
+          ],
+        ),
+      ),
+      PopupMenuItem<Options>(
+        value: Options.clone,
+        onTap: () async {
+          try {
+            await widget.presenter.clone(list);
+            if (mounted) {
+              // TODO: abrir um snackbar
+            }
+          } catch (e) {
+            log(e.toString());
+          }
+        },
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              child: const Icon(
+                Icons.copy,
+                color: Color(0xFF8e8e8e),
+              ),
+            ),
+            Text(
+              'Clonar',
+              style: AppText.popup(AppColors.black02),
+            ),
+          ],
+        ),
+      ),
+      PopupMenuItem<Options>(
+        value: Options.share,
+        onTap: () async {
+          try {
+            await widget.presenter.share(list);
+          } catch (e) {
+            log(e.toString());
+          }
+        },
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              child: const Icon(
+                Icons.share,
+                color: Color(0xFF8e8e8e),
+              ),
+            ),
+            Text(
+              'Compartilhar',
+              style: AppText.popup(AppColors.black02),
+            ),
+          ],
+        ),
+      ),
+    ];
   }
 }

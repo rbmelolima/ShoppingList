@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/main/routes/routes.dart';
@@ -18,6 +20,16 @@ class MyListsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Minhas listas"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              presenter.getAllLists();
+            },
+            icon: const Icon(
+              Icons.refresh,
+            ),
+          )
+        ],
       ),
       body: Builder(
         builder: (context) {
@@ -203,13 +215,5 @@ class MyListsPage extends StatelessWidget {
         );
       },
     );
-  }
-
-  void onCloseKeyboard(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-    }
   }
 }

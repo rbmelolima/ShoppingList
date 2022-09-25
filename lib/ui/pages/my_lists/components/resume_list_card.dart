@@ -4,8 +4,8 @@ import 'package:shoppinglist/main/routes/routes.dart';
 import 'package:shoppinglist/ui/style/color.dart';
 import 'package:shoppinglist/ui/style/text.dart';
 
-enum Options { copy, delete, share }
-
+enum Options { clone, delete, share }
+//TODO: melhorar a área de click 
 class ResumeListCard extends StatefulWidget {
   final ShoppingListEntity list;
 
@@ -146,7 +146,7 @@ class _ResumeListCardState extends State<ResumeListCard> {
         ),
       ),
       PopupMenuItem<Options>(
-        value: Options.copy,
+        value: Options.clone,
         onTap: () => widget.onClone(),
         child: Row(
           children: [
