@@ -37,7 +37,7 @@ class MyListsPresenter {
     }
   }
 
-  Future<void> deleteList(String id) async {
+  Future<void> delete(String id) async {
     try {
       await deleteUsecase.delete(id);
       await getAllLists();
@@ -81,29 +81,7 @@ class MyListsPresenter {
         id: generateMd5(createListName.text),
         name: createListName.text,
         description: "",
-        products: [
-          ProductEntity(
-            id: generateMd5("novo-produto-1"),
-            name: 'Produto 1',
-          ),
-          ProductEntity(
-            id: generateMd5("novo-produto-2"),
-            name: 'Produto 2',
-            company: "Empresa XPTO",
-            measure: "1",
-            unitOfMeasurement: "unidades",
-          ),
-          ProductEntity(
-            id: generateMd5("novo-produto-3"),
-            name: 'Produto 3',
-            company: "Empresa XPTO",
-            description: "Lorem ipsum dolor sit amet",
-          ),
-          ProductEntity(
-            id: generateMd5("novo-produto-4"),
-            name: 'Produto 4',
-          ),
-        ],
+        products: [],
         tags: [],
       );
 

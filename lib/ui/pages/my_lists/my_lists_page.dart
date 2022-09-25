@@ -52,7 +52,7 @@ class MyListsPage extends StatelessWidget {
                               return ResumeListCard(
                                 list: snapshot.data![index],
                                 onDelete: () async {
-                                  await presenter.deleteList(
+                                  await presenter.delete(
                                     snapshot.data![index].id,
                                   );
                                 },
