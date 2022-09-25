@@ -11,11 +11,13 @@ class MyListsPresenter {
   final GetListsUsecase getUsecase;
   final CreateListUsecase createUsecase;
   final DeleteListUsecase deleteUsecase;
+  final ShareListUsecase shareUsecase;
 
   MyListsPresenter({
     required this.getUsecase,
     required this.createUsecase,
     required this.deleteUsecase,
+    required this.shareUsecase,
   });
 
   // Armazenar e fornecer todas as listas
@@ -60,6 +62,14 @@ class MyListsPresenter {
       await getAllLists();
     } catch (e) {
       log("Não foi possível clonar a lista ${entity.id}");
+    }
+  }
+
+  Future<void> share(ShoppingListEntity entity) async {
+    try {
+      await shareUsecase.share(entity);
+    } catch (e) {
+      log("Erro ao compartilhar lista");
     }
   }
 

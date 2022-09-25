@@ -11,12 +11,14 @@ class ResumeListCard extends StatefulWidget {
 
   final Function onDelete;
   final Function onClone;
+  final Function onShare;
 
   const ResumeListCard({
     Key? key,
     required this.list,
     required this.onDelete,
     required this.onClone,
+    required this.onShare,
   }) : super(key: key);
 
   @override
@@ -161,6 +163,7 @@ class _ResumeListCardState extends State<ResumeListCard> {
       ),
       PopupMenuItem<Options>(
         value: Options.share,
+        onTap: () => widget.onShare(),
         child: Row(
           children: [
             Container(

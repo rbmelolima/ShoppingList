@@ -7,6 +7,7 @@ Widget makeMyListsPage() {
     getUsecase: makeLocalGetLists(),
     createUsecase: makeLocalCreateList(),
     deleteUsecase: makeLocalDeleteList(),
+    shareUsecase: makeExternalShareList(),
   );
 
   return MyListsPage(presenter: presenter);
