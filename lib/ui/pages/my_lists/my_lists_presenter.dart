@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/domain/usecases/usecases.dart';
+import 'package:shoppinglist/utils/generate_md5.dart';
 
 class MyListsPresenter {
   final GetListsUsecase getUsecase;
@@ -96,9 +95,5 @@ class MyListsPresenter {
     } finally {
       onCleanText();
     }
-  }
-
-  String generateMd5(String input) {
-    return md5.convert(utf8.encode(input)).toString();
   }
 }
