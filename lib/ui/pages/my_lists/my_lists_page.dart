@@ -120,13 +120,16 @@ class MyListsPage extends StatelessWidget {
                 children: [
                   Center(
                     child: Text(
-                      "Nova Lista",
+                      "+ Nova Lista",
                       style: Theme.of(context).textTheme.headline4,
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 32, bottom: 16),
                     child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: "Qual o nome da sua lista de compras?",
+                      ),
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => onCloseKeyboard(context),
                       controller: presenter.createListName,
