@@ -70,40 +70,43 @@ class _ResumeListCardState extends State<ResumeListCard> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.listDetails,
-                  arguments: widget.list,
-                );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.list.name,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  if (hasProducts) ...[
+            Expanded(
+              flex: 4,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.listDetails,
+                    arguments: widget.list,
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      getListOfProducts(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      widget.list.name,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 12),
-                      child: Chip(
-                        label: Text(
-                          widget.list.products.length.toString() +
-                              " itens".toUpperCase(),
-                        ),
-                        backgroundColor: AppColors.primaryLight,
+                    if (hasProducts) ...[
+                      Text(
+                        getListOfProducts(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
-                    )
-                  ]
-                ],
+                      Container(
+                        margin: const EdgeInsets.only(top: 12),
+                        child: Chip(
+                          label: Text(
+                            widget.list.products.length.toString() +
+                                " itens".toUpperCase(),
+                          ),
+                          backgroundColor: AppColors.primaryLight,
+                        ),
+                      )
+                    ]
+                  ],
+                ),
               ),
             ),
             const Spacer(),
