@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shoppinglist/main/factories/usecases/usecases.dart';
 import 'package:shoppinglist/ui/pages/list_details/list_details.dart';
 
 Widget makeListDetailsPage() {
-  var presenter = ListDetailsPresenter();
+  var presenter = ListDetailsPresenter(
+    createUsecase: makeLocalCreateList(),
+    deleteUsecase: makeLocalDeleteList(),
+    shareUsecase: makeExternalShareList(),
+  );
   return ListDetailsPage(presenter: presenter);
 }

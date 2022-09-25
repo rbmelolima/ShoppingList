@@ -1,0 +1,1 @@
+export './resume_product_card.dart';
