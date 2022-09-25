@@ -56,6 +56,9 @@ class MyListsPage extends StatelessWidget {
                                     snapshot.data![index].id,
                                   );
                                 },
+                                onClone: () async {
+                                  await presenter.clone(snapshot.data![index]);
+                                },
                               );
                             },
                           ),

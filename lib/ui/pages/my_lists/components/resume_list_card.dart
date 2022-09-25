@@ -10,11 +10,13 @@ class ResumeListCard extends StatefulWidget {
   final ShoppingListEntity list;
 
   final Function onDelete;
+  final Function onClone;
 
   const ResumeListCard({
     Key? key,
     required this.list,
     required this.onDelete,
+    required this.onClone,
   }) : super(key: key);
 
   @override
@@ -140,6 +142,7 @@ class _ResumeListCardState extends State<ResumeListCard> {
       ),
       PopupMenuItem<Options>(
         value: Options.copy,
+        onTap: () => widget.onClone(),
         child: Row(
           children: [
             Container(
