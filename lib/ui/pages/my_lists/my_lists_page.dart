@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/main/routes/routes.dart';
@@ -184,8 +182,9 @@ class MyListsPage extends StatelessWidget {
                                     setState(() {
                                       btnState = ButtonState.enable;
                                     });
-                                    if (!mounted) return;
 
+                                    if (!mounted) return;
+                                    Navigator.pop(context);
                                     Navigator.pushNamed(
                                       context,
                                       AppRoutes.listDetails,
