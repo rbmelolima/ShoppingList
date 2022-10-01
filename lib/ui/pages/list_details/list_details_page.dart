@@ -115,9 +115,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
             ),
             child: IconButton(
               color: Colors.white,
-              onPressed: () {
-                print("alo");
-              },
+              onPressed: () {},
               icon: const Icon(Icons.add),
             ),
           )
