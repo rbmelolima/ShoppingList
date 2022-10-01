@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/ui/components/leading_btn.dart';
+import 'package:shoppinglist/ui/helpers/button_state.dart';
 import 'package:shoppinglist/ui/pages/list_details/components/components.dart';
-import 'package:shoppinglist/ui/pages/list_details/components/not_found_products.dart';
 import 'package:shoppinglist/ui/style/style.dart';
 
 import './list_details_presenter.dart';
-import '../../components/leading_btn.dart';
 
 enum Options { clone, delete, share, edit }
 
@@ -25,10 +25,12 @@ class ListDetailsPage extends StatefulWidget {
 
 class _ListDetailsPageState extends State<ListDetailsPage> {
   late ShoppingListEntity list;
+  late ButtonState createButtonState;
   bool firstUpdate = true;
 
   @override
   void initState() {
+    createButtonState = ButtonState.disable;
     super.initState();
   }
 
@@ -38,7 +40,10 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
       setState(() {
         list = ModalRoute.of(context)!.settings.arguments as ShoppingListEntity;
         firstUpdate = false;
+        widget.presenter.list = list;
       });
+    } else {
+      list = widget.presenter.list;
     }
 
     return Scaffold(
@@ -100,25 +105,61 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
               onSubmitted: (_) => () {},
               controller: widget.presenter.createProduct,
               maxLines: 1,
-              onChanged: (_) {},
+              onChanged: (_) {
+                if (widget.presenter.createProduct.text.isNotEmpty) {
+                  setState(() {
+                    createButtonState = ButtonState.enable;
+                  });
+                } else {
+                  setState(() {
+                    createButtonState = ButtonState.disable;
+                  });
+                }
+              },
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(left: 16),
-            height: 56,
-            width: 56,
-            decoration: BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(56),
-              ),
-            ),
-            child: IconButton(
-              color: Colors.white,
-              onPressed: () {},
-              icon: const Icon(Icons.add),
-            ),
-          )
+          Builder(
+            builder: (context) {
+              if (createButtonState == ButtonState.loading) {
+                return const LoadingButton();
+              }
+              return Container(
+                margin: const EdgeInsets.only(left: 16),
+                height: 56,
+                width: 56,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(56),
+                  ),
+                ),
+                child: IconButton(
+                  color: Colors.white,
+                  onPressed: createButtonState == ButtonState.enable
+                      ? () async {
+                          try {
+                            log("aloooo");
+                            setState(() {
+                              createButtonState = ButtonState.loading;
+                            });
+                            await widget.presenter.addProduct(list);
+                            setState(() {
+                              createButtonState = ButtonState.enable;
+                            });
+                          } catch (e) {
+                            log("Erro ao adicionar um produto.");
+                          } finally {
+                            setState(() {
+                              createButtonState = ButtonState.enable;
+                            });
+                          }
+                        }
+                      : null,
+                  icon: const Icon(Icons.add),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

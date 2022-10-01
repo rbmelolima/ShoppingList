@@ -7,6 +7,9 @@ Widget makeListDetailsPage() {
     createUsecase: makeLocalCreateList(),
     deleteUsecase: makeLocalDeleteList(),
     shareUsecase: makeExternalShareList(),
+    addProductUsecase: makeLocalAddProduct(),
+    deleteProductUsecase: makeLocalDeleteProduct(),
+    updateProductUsecase: makeLocalUpdateProduct(),
   );
   return ListDetailsPage(presenter: presenter);
 }
