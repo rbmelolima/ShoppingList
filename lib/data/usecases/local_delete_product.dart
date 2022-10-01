@@ -1,3 +1,4 @@
+import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/domain/usecases/delete_product_on_list_usecase.dart';
 import 'package:shoppinglist/domain/usecases/get_lists_usecase.dart';
 import 'package:shoppinglist/domain/usecases/update_list_usecase.dart';
@@ -9,7 +10,10 @@ class LocalDeleteProduct implements DeleteProductOnListUsecase {
   LocalDeleteProduct(this.getListsUsecase, this.updateListUsecase);
 
   @override
-  Future<void> deleteProduct(String idList, String idProduct) async {
+  Future<ShoppingListEntity> deleteProduct(
+    String idList,
+    String idProduct,
+  ) async {
     try {
       var list = await getListsUsecase.getById(idList);
       if (list == null) {

@@ -10,13 +10,16 @@ class LocalUpdateList implements UpdateListUsecase {
   LocalUpdateList(this.cacheStorage);
 
   @override
-  Future<void> update(ShoppingListEntity shoppingList) async {
+  Future<ShoppingListEntity> update(
+    ShoppingListEntity shoppingList,
+  ) async {
     try {
       var list = await cacheStorage.fetch(shoppingList.id);
 
       if (list != null) {
         await cacheStorage.delete(shoppingList.id);
         await cacheStorage.save(key: shoppingList.id, value: shoppingList);
+        return shoppingList;
       } else {
         throw Exception("Não foi possível encontrar a lista");
       }
