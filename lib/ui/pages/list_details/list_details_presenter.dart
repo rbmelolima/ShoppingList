@@ -26,7 +26,6 @@ class ListDetailsPresenter {
   TextEditingController createProduct = TextEditingController(text: "");
   void onCleanText() => createProduct.text = "";
 
-  late ShoppingListEntity list;
 
   Future<void> delete(String id) async {
     try {
@@ -62,18 +61,20 @@ class ListDetailsPresenter {
     }
   }
 
-  Future<void> addProduct(ShoppingListEntity list) async {
+  Future<ShoppingListEntity> addProduct(ShoppingListEntity list) async {
     try {
       if (createProduct.text.isEmpty) {
         throw Exception("Escreva um nome para o produto");
       }
-      await addProductUsecase.addProduct(
+      var updatedList = await addProductUsecase.addProduct(
         list.id,
         ProductEntity(
           name: createProduct.text,
           id: generateMd5(createProduct.text),
         ),
       );
+
+      return updatedList;
     } catch (e) {
       throw Exception("Não foi possível criar o produto");
     }

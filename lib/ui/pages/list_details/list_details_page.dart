@@ -38,12 +38,9 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
   Widget build(BuildContext context) {
     if (firstUpdate) {
       setState(() {
-        list = ModalRoute.of(context)!.settings.arguments as ShoppingListEntity;
         firstUpdate = false;
-        widget.presenter.list = list;
+        list = ModalRoute.of(context)!.settings.arguments as ShoppingListEntity;
       });
-    } else {
-      list = widget.presenter.list;
     }
 
     return Scaffold(
@@ -74,10 +71,17 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                   return ResumeProductCard(product: list.products[index]);
                 },
               ),
-              TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(primary: AppColors.secundaryDark),
-                child: Text("buscar menores preços".toUpperCase()),
+              Container(
+                margin: const EdgeInsets.only(top: 8),
+                width: double.maxFinite,
+                child: TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    primary: AppColors.secundaryDark,
+                    padding: const EdgeInsets.all(16),
+                  ),
+                  child: Text("buscar menores preços".toUpperCase()),
+                ),
               ),
             ],
             _buildWhiteSpace(),
@@ -135,25 +139,9 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 ),
                 child: IconButton(
                   color: Colors.white,
+                  disabledColor: Colors.white,
                   onPressed: createButtonState == ButtonState.enable
-                      ? () async {
-                          try {
-                            log("aloooo");
-                            setState(() {
-                              createButtonState = ButtonState.loading;
-                            });
-                            await widget.presenter.addProduct(list);
-                            setState(() {
-                              createButtonState = ButtonState.enable;
-                            });
-                          } catch (e) {
-                            log("Erro ao adicionar um produto.");
-                          } finally {
-                            setState(() {
-                              createButtonState = ButtonState.enable;
-                            });
-                          }
-                        }
+                      ? onAddProduct
                       : null,
                   icon: const Icon(Icons.add),
                 ),
@@ -163,6 +151,26 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         ],
       ),
     );
+  }
+
+  Future<void> onAddProduct() async {
+    try {
+      setState(() {
+        createButtonState = ButtonState.loading;
+      });
+      var updated = await widget.presenter.addProduct(list);
+      setState(() {
+        createButtonState = ButtonState.enable;
+        list = updated;
+      });
+    } catch (e) {
+      log("Erro ao adicionar um produto.");
+    } finally {
+      setState(() {
+        createButtonState = ButtonState.enable;
+      });
+      widget.presenter.onCleanText();
+    }
   }
 
   Widget _buildWhiteSpace() => Container(height: 96);
