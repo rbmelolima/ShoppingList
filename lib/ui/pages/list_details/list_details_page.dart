@@ -9,7 +9,7 @@ import 'package:shoppinglist/ui/style/style.dart';
 import './list_details_presenter.dart';
 import '../../components/leading_btn.dart';
 
-enum Options { clone, delete, share }
+enum Options { clone, delete, share, edit }
 
 class ListDetailsPage extends StatefulWidget {
   final ListDetailsPresenter presenter;
@@ -188,10 +188,24 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           try {
             await widget.presenter.clone(list);
             if (mounted) {
-              // TODO: abrir um snackbar
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text("Lista clonada com sucesso!"),
+                  backgroundColor: Colors.green,
+                ),
+              );
             }
           } catch (e) {
-            log(e.toString());
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text("Não foi possível clonar a lista"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           }
         },
         child: Row(
@@ -230,6 +244,29 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
             ),
             Text(
               'Compartilhar',
+              style: AppText.popup(AppColors.black02),
+            ),
+          ],
+        ),
+      ),
+      PopupMenuItem<Options>(
+        value: Options.edit,
+        onTap: () async {
+          try {} catch (e) {
+            log(e.toString());
+          }
+        },
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              child: const Icon(
+                Icons.edit,
+                color: Color(0xFF8e8e8e),
+              ),
+            ),
+            Text(
+              'Editar',
               style: AppText.popup(AppColors.black02),
             ),
           ],
