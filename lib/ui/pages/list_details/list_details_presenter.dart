@@ -26,7 +26,6 @@ class ListDetailsPresenter {
   TextEditingController createProduct = TextEditingController(text: "");
   void onCleanText() => createProduct.text = "";
 
-
   Future<void> delete(String id) async {
     try {
       await deleteUsecase.delete(id);
@@ -69,7 +68,7 @@ class ListDetailsPresenter {
       var updatedList = await addProductUsecase.addProduct(
         list.id,
         ProductEntity(
-          name: createProduct.text,
+          name: createProduct.text.trim(),
           id: generateMd5(createProduct.text),
         ),
       );

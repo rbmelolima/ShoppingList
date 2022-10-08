@@ -78,7 +78,7 @@ class MyListsPresenter {
         createdAt: DateTime.now().toString(),
         updatedAt: DateTime.now().toString(),
         id: generateMd5(createListName.text),
-        name: createListName.text,
+        name: createListName.text.trim(),
         description: "",
         products: [],
         tags: [],
