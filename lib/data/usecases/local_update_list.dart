@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shoppinglist/data/cache/cache.dart';
 import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/domain/usecases/usecases.dart';
