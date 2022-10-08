@@ -5,11 +5,12 @@ import '../factories/pages/pages.dart';
 
 class AppNavigation {
   static Future<dynamic> navigateToUpdateProduct(
-      BuildContext context, ProductEntity product) async {
+      BuildContext context, ProductEntity product, String idList) async {
     return await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => makeUpdateProductPage(
+          idList,
           product,
         ),
       ),

@@ -5,10 +5,12 @@ import 'package:shoppinglist/ui/style/style.dart';
 
 class ResumeProductCard extends StatefulWidget {
   final ProductEntity product;
+  final String idList;
 
   const ResumeProductCard({
     Key? key,
     required this.product,
+    required this.idList,
   }) : super(key: key);
 
   @override
@@ -47,6 +49,7 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
           AppNavigation.navigateToUpdateProduct(
             context,
             widget.product,
+            widget.idList,
           );
         },
         splashColor: Colors.transparent,

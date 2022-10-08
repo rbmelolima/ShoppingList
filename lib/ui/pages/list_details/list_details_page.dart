@@ -70,7 +70,10 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return ResumeProductCard(product: _list.products[index]);
+                  return ResumeProductCard(
+                    product: _list.products[index],
+                    idList: _list.id,
+                  );
                 },
               ),
               Container(

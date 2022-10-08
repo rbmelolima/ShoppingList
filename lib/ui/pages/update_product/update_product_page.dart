@@ -18,11 +18,13 @@ const List<String> quantifiers = [
 class UpdateProductPage extends StatefulWidget {
   final UpdateProductPresenter presenter;
   final ProductEntity product;
+  final String idList;
 
   const UpdateProductPage({
     Key? key,
     required this.presenter,
     required this.product,
+    required this.idList,
   }) : super(key: key);
 
   @override
@@ -70,7 +72,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             Container(
               margin: const EdgeInsets.only(bottom: 36),
               child: Text(
-                "Sobre o\nProduto",
+                "Sobre o Produto",
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
@@ -156,7 +158,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               margin: const EdgeInsets.only(bottom: 16, top: 12),
               child: ElevatedButton(
                 onPressed: () async {
-                  await widget.presenter.save();
+                  await widget.presenter.save(widget.idList);
                 },
                 child: Text("salvar".toUpperCase()),
               ),

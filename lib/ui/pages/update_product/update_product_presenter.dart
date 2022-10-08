@@ -2,9 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/product_entity.dart';
+import 'package:shoppinglist/domain/usecases/delete_product_on_list_usecase.dart';
+import 'package:shoppinglist/domain/usecases/update_product_on_list_usecase.dart';
 
 class UpdateProductPresenter {
-  UpdateProductPresenter() {
+  final UpdateProductOnListUsecase updateUsecase;
+  final DeleteProductOnListUsecase deleteUsecase;
+
+  UpdateProductPresenter(this.updateUsecase, this.deleteUsecase) {
     productName = TextEditingController();
     productQuantifierValue = TextEditingController();
     productBrand = TextEditingController();
@@ -22,7 +27,7 @@ class UpdateProductPresenter {
   late TextEditingController productQuantifierValue;
   late TextEditingController productBrand;
   late TextEditingController productDetails;
-  String? productQuantifierType;
+  late String? productQuantifierType;
   late String productId;
 
   void fill(ProductEntity initialValue) {
@@ -34,16 +39,21 @@ class UpdateProductPresenter {
     productId = initialValue.id;
   }
 
-  Future<void> save() async {
-    ProductEntity product = ProductEntity(
-      id: productId,
-      name: productName.text,
-      brand: productBrand.text,
-      measure: productQuantifierValue.text,
-      unitOfMeasurement: productQuantifierType,
-      description: productDetails.text,
-    );
+  Future<void> save(String listId) async {
+    try {
+      ProductEntity product = ProductEntity(
+        id: productId,
+        name: productName.text,
+        brand: productBrand.text,
+        measure: productQuantifierValue.text,
+        unitOfMeasurement: productQuantifierType,
+        description: productDetails.text,
+      );
 
-    log("salvo com sucesso!");
+      await updateUsecase.updateProduct(listId, product);
+    } catch (e) {
+      log("Não foi possível salvar a edição");
+      rethrow;
+    }
   }
 }
