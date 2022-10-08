@@ -44,6 +44,11 @@ ThemeData defaultTheme() {
     chipTheme: ChipThemeData(
       labelStyle: AppText.chip(AppColors.black01),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 22),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: const Color.fromRGBO(33, 33, 33, 0.05),
