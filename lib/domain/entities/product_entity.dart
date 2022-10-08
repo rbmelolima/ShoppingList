@@ -6,7 +6,7 @@ class ProductEntity {
     required this.id,
     this.measure,
     this.unitOfMeasurement,
-    this.company,
+    this.brand,
     this.description,
   });
 
@@ -14,7 +14,7 @@ class ProductEntity {
   final String name;
   final String? measure;
   final String? unitOfMeasurement;
-  final String? company;
+  final String? brand;
   final String? description;
 
   factory ProductEntity.fromJson(String str) {
@@ -31,7 +31,7 @@ class ProductEntity {
       id: json["id"],
       measure: json["measure"],
       unitOfMeasurement: json["unitOfMeasurement"],
-      company: json["company"],
+      brand: json["brand"],
       description: json["description"],
     );
   }
@@ -42,7 +42,7 @@ class ProductEntity {
       "id": id,
       "measure": measure,
       "unitOfMeasurement": unitOfMeasurement,
-      "company": company,
+      "brand": brand,
       "description": description,
     };
   }

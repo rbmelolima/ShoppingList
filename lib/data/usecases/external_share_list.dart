@@ -14,8 +14,8 @@ class ExternalShareList implements ShareListUsecase {
 
       for (var prod in shoppingList.products) {
         String temp = "${prod.name}\n";
-        if (prod.company != null) {
-          temp += "- Marca: ${prod.company}\n";
+        if (prod.brand != null) {
+          temp += "- Marca: ${prod.brand}\n";
         }
         if (prod.description != null) {
           temp += "- Descrição: ${prod.description}\n";
