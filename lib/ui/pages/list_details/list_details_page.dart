@@ -52,29 +52,13 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         titleSpacing: 0,
         leadingWidth: 40,
         centerTitle: false,
-        actionsIconTheme: IconThemeData(
-          color: AppColors.black01,
-        ),
         leading: const LeadingBtn(),
-        actions: [
-          PopupMenuButton<Options>(
-            icon: const Icon(Icons.settings),
-            itemBuilder: (context) => _generatePopupItensList,
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 24),
-              child: Text(
-                _list.name.toString(),
-                style: Theme.of(context).textTheme.headline3,
-                softWrap: true,
-              ),
-            ),
+            _buildHeader(context),
             if (_list.products.isEmpty) ...[
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
@@ -192,6 +176,30 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
   }
 
   Widget _buildWhiteSpace() => Container(height: 96);
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 8,
+            child: Text(
+              _list.name.toString(),
+              style: Theme.of(context).textTheme.headline3,
+              softWrap: true,
+            ),
+          ),
+          const Spacer(),
+          PopupMenuButton<Options>(
+            icon: const Icon(Icons.settings),
+            itemBuilder: (context) => _generatePopupItensList,
+          ),
+        ],
+      ),
+    );
+  }
 
   List<PopupMenuEntry<Options>> get _generatePopupItensList {
     return <PopupMenuEntry<Options>>[
