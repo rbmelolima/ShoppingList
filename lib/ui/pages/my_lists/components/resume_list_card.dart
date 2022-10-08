@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/main/routes/navigation.dart';
-import 'package:shoppinglist/main/routes/routes.dart';
 import 'package:shoppinglist/ui/style/color.dart';
 import 'package:shoppinglist/ui/style/text.dart';
 
