@@ -189,7 +189,7 @@ class MyListsPage extends StatelessWidget {
                                     AppNavigation.navigateToListDetails(
                                       context,
                                       list,
-                                    ).then((value) => Navigator.pop(context));
+                                    );
                                   } catch (e) {
                                     if (!mounted) return;
                                     Navigator.pop(context);
