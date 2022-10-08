@@ -13,10 +13,12 @@ enum Options { clone, delete, share, edit }
 
 class ListDetailsPage extends StatefulWidget {
   final ListDetailsPresenter presenter;
+  final ShoppingListEntity list;
 
   const ListDetailsPage({
     Key? key,
     required this.presenter,
+    required this.list,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class ListDetailsPage extends StatefulWidget {
 }
 
 class _ListDetailsPageState extends State<ListDetailsPage> {
-  late ShoppingListEntity list;
+  late ShoppingListEntity _list;
   late ButtonState createButtonState;
   bool firstUpdate = true;
 
@@ -39,7 +41,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
     if (firstUpdate) {
       setState(() {
         firstUpdate = false;
-        list = ModalRoute.of(context)!.settings.arguments as ShoppingListEntity;
+        _list = widget.list;
       });
     }
 
@@ -57,18 +59,18 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         child: Column(
           children: [
             _buildHeader(context),
-            if (list.products.isEmpty) ...[
+            if (_list.products.isEmpty) ...[
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: const NotFoundProducts(),
               )
             ] else ...[
               ListView.builder(
-                itemCount: list.products.length,
+                itemCount: _list.products.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return ResumeProductCard(product: list.products[index]);
+                  return ResumeProductCard(product: _list.products[index]);
                 },
               ),
               Container(
@@ -158,10 +160,10 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
       setState(() {
         createButtonState = ButtonState.loading;
       });
-      var updated = await widget.presenter.addProduct(list);
+      var updated = await widget.presenter.addProduct(_list);
       setState(() {
         createButtonState = ButtonState.enable;
-        list = updated;
+        _list = updated;
       });
     } catch (e) {
       log("Erro ao adicionar um produto.");
@@ -184,7 +186,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           Expanded(
             flex: 8,
             child: Text(
-              list.name.toString(),
+              _list.name.toString(),
               style: Theme.of(context).textTheme.headline3,
               softWrap: true,
             ),
@@ -205,7 +207,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         value: Options.delete,
         onTap: () async {
           try {
-            await widget.presenter.delete(list.id);
+            await widget.presenter.delete(_list.id);
             if (mounted) {
               Navigator.pop(context);
             }
@@ -233,7 +235,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         value: Options.clone,
         onTap: () async {
           try {
-            await widget.presenter.clone(list);
+            await widget.presenter.clone(_list);
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -275,7 +277,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         value: Options.share,
         onTap: () async {
           try {
-            await widget.presenter.share(list);
+            await widget.presenter.share(_list);
           } catch (e) {
             log(e.toString());
           }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/main/routes/navigation.dart';
 import 'package:shoppinglist/main/routes/routes.dart';
 import 'package:shoppinglist/ui/style/color.dart';
 import 'package:shoppinglist/ui/style/text.dart';
 
 enum Options { clone, delete, share }
-//TODO: melhorar a área de click 
+
+//TODO: melhorar a área de click
 class ResumeListCard extends StatefulWidget {
   final ShoppingListEntity list;
 
@@ -74,10 +76,9 @@ class _ResumeListCardState extends State<ResumeListCard> {
               flex: 4,
               child: InkWell(
                 onTap: () {
-                  Navigator.pushNamed(
+                  AppNavigation.navigateToListDetails(
                     context,
-                    AppRoutes.listDetails,
-                    arguments: widget.list,
+                    widget.list,
                   );
                 },
                 child: Column(

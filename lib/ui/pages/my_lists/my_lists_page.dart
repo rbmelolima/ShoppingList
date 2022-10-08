@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/main/routes/navigation.dart';
 import 'package:shoppinglist/main/routes/routes.dart';
 import 'package:shoppinglist/ui/helpers/helpers.dart';
 import 'package:shoppinglist/ui/pages/my_lists/my_lists.dart';
@@ -185,10 +186,9 @@ class MyListsPage extends StatelessWidget {
 
                                     if (!mounted) return;
                                     Navigator.pop(context);
-                                    Navigator.pushNamed(
+                                    AppNavigation.navigateToListDetails(
                                       context,
-                                      AppRoutes.listDetails,
-                                      arguments: list,
+                                      list,
                                     ).then((value) => Navigator.pop(context));
                                   } catch (e) {
                                     if (!mounted) return;

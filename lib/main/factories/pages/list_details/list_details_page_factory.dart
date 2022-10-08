@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/main/factories/usecases/usecases.dart';
 import 'package:shoppinglist/ui/pages/list_details/list_details.dart';
 
-Widget makeListDetailsPage() {
+Widget makeListDetailsPage(ShoppingListEntity list) {
   var presenter = ListDetailsPresenter(
     createUsecase: makeLocalCreateList(),
     deleteUsecase: makeLocalDeleteList(),
@@ -11,5 +12,8 @@ Widget makeListDetailsPage() {
     deleteProductUsecase: makeLocalDeleteProduct(),
     updateProductUsecase: makeLocalUpdateProduct(),
   );
-  return ListDetailsPage(presenter: presenter);
+  return ListDetailsPage(
+    presenter: presenter,
+    list: list,
+  );
 }
