@@ -5,21 +5,26 @@ import '../factories/pages/pages.dart';
 
 class AppNavigation {
   static Future<dynamic> navigateToUpdateProduct(
-    BuildContext context,
-  ) async {
+      BuildContext context, ProductEntity product) async {
     return await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => makeUpdateProductPage()),
+      MaterialPageRoute(
+        builder: (context) => makeUpdateProductPage(
+          product,
+        ),
+      ),
     );
   }
 
   static Future<dynamic> navigateToListDetails(
-    BuildContext context,
-    ShoppingListEntity list,
-  ) async {
+      BuildContext context, ShoppingListEntity list) async {
     return await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => makeListDetailsPage(list)),
+      MaterialPageRoute(
+        builder: (context) => makeListDetailsPage(
+          list,
+        ),
+      ),
     );
   }
 }

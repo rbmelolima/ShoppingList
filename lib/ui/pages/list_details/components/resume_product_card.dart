@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/main/routes/navigation.dart';
 import 'package:shoppinglist/ui/style/style.dart';
 
 class ResumeProductCard extends StatefulWidget {
@@ -41,17 +42,25 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
         ],
       ),
       margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 14,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InkWell(
-              onTap: () {},
-              child: Column(
+      child: InkWell(
+        onTap: () {
+          AppNavigation.navigateToUpdateProduct(
+            context,
+            widget.product,
+          );
+        },
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 14,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -81,8 +90,8 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                   ]
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
