@@ -72,6 +72,9 @@ class MyListsPage extends StatelessWidget {
                                 onShare: () async {
                                   await presenter.share(snapshot.data![index]);
                                 },
+                                onUpdatePage: () async {
+                                  await presenter.getAllLists();
+                                },
                               );
                             },
                           ),

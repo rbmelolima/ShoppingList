@@ -52,7 +52,9 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         titleSpacing: 0,
         leadingWidth: 40,
         centerTitle: false,
-        leading: const LeadingBtn(),
+        leading: LeadingBtn(
+          onBack: () => Navigator.pop(context, true),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -212,7 +214,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           try {
             await widget.presenter.delete(_list.id);
             if (mounted) {
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             }
           } catch (e) {
             log(e.toString());

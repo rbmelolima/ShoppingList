@@ -13,6 +13,7 @@ class ResumeListCard extends StatefulWidget {
   final Function onDelete;
   final Function onClone;
   final Function onShare;
+  final Function onUpdatePage;
 
   const ResumeListCard({
     Key? key,
@@ -20,6 +21,7 @@ class ResumeListCard extends StatefulWidget {
     required this.onDelete,
     required this.onClone,
     required this.onShare,
+    required this.onUpdatePage,
   }) : super(key: key);
 
   @override
@@ -74,11 +76,16 @@ class _ResumeListCardState extends State<ResumeListCard> {
             Expanded(
               flex: 4,
               child: InkWell(
-                onTap: () {
-                  AppNavigation.navigateToListDetails(
+                onTap: () async {
+                  var needsUpdatePage =
+                      await AppNavigation.navigateToListDetails(
                     context,
                     widget.list,
                   );
+
+                  if (needsUpdatePage) {
+                    widget.onUpdatePage();
+                  }
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
