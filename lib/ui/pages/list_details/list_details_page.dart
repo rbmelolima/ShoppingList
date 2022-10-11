@@ -33,6 +33,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
   @override
   void initState() {
     createButtonState = ButtonState.disable;
+    widget.presenter.actualListId = widget.list.id;
     super.initState();
   }
 
@@ -75,6 +76,14 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                   return ResumeProductCard(
                     product: _list.products[index],
                     idList: _list.id,
+                    onUpdatePage: () async {
+                      var updatedList = await widget.presenter.getList();
+                      if (updatedList != null) {
+                        setState(() {
+                          _list = updatedList;
+                        });
+                      }
+                    },
                   );
                 },
               ),

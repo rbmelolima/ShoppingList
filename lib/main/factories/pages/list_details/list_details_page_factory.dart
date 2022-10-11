@@ -5,9 +5,10 @@ import 'package:shoppinglist/ui/pages/list_details/list_details.dart';
 
 Widget makeListDetailsPage(ShoppingListEntity list) {
   var presenter = ListDetailsPresenter(
-    createUsecase: makeLocalCreateList(),
-    deleteUsecase: makeLocalDeleteList(),
-    shareUsecase: makeExternalShareList(),
+    getListUsecase: makeLocalGetLists(),
+    createListUsecase: makeLocalCreateList(),
+    deleteListUsecase: makeLocalDeleteList(),
+    shareListUsecase: makeExternalShareList(),
     addProductUsecase: makeLocalAddProduct(),
     deleteProductUsecase: makeLocalDeleteProduct(),
     updateProductUsecase: makeLocalUpdateProduct(),

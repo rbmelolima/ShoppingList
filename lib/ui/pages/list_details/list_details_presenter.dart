@@ -6,17 +6,19 @@ import 'package:shoppinglist/domain/usecases/usecases.dart';
 import 'package:shoppinglist/utils/generate_md5.dart';
 
 class ListDetailsPresenter {
-  final CreateListUsecase createUsecase;
-  final DeleteListUsecase deleteUsecase;
-  final ShareListUsecase shareUsecase;
+  final CreateListUsecase createListUsecase;
+  final DeleteListUsecase deleteListUsecase;
+  final ShareListUsecase shareListUsecase;
+  final GetListsUsecase getListUsecase;
   final AddProductOnListUsecase addProductUsecase;
   final DeleteProductOnListUsecase deleteProductUsecase;
   final UpdateProductOnListUsecase updateProductUsecase;
 
   ListDetailsPresenter({
-    required this.createUsecase,
-    required this.deleteUsecase,
-    required this.shareUsecase,
+    required this.createListUsecase,
+    required this.getListUsecase,
+    required this.deleteListUsecase,
+    required this.shareListUsecase,
     required this.addProductUsecase,
     required this.deleteProductUsecase,
     required this.updateProductUsecase,
@@ -25,10 +27,20 @@ class ListDetailsPresenter {
   // Cuidar do comportamento do input de criar produto
   TextEditingController createProduct = TextEditingController(text: "");
   void onCleanText() => createProduct.text = "";
+  String actualListId = "";
+
+  Future<ShoppingListEntity?> getList() async {
+    try {
+      return await getListUsecase.getById(actualListId);
+    } catch (e) {
+      
+      log("Não foi possível recuperar a lista atual");
+    }
+  }
 
   Future<void> delete(String id) async {
     try {
-      await deleteUsecase.delete(id);
+      await deleteListUsecase.delete(id);
     } catch (e) {
       log("Não foi possível deletar a lista $id");
     }
@@ -46,7 +58,7 @@ class ListDetailsPresenter {
         tags: entity.tags,
       );
 
-      await createUsecase.create(clonedList);
+      await createListUsecase.create(clonedList);
     } catch (e) {
       log("Não foi possível clonar a lista ${entity.id}");
     }
@@ -54,7 +66,7 @@ class ListDetailsPresenter {
 
   Future<void> share(ShoppingListEntity entity) async {
     try {
-      await shareUsecase.share(entity);
+      await shareListUsecase.share(entity);
     } catch (e) {
       log("Erro ao compartilhar lista");
     }

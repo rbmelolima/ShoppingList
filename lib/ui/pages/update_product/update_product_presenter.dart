@@ -30,6 +30,9 @@ class UpdateProductPresenter {
   late String? productQuantifierType;
   late String productId;
 
+  bool isEditing = false;
+  bool wasEdited = false;
+
   void fill(ProductEntity initialValue) {
     productName.text = initialValue.name;
     productBrand.text = initialValue.brand ?? "";
@@ -41,6 +44,8 @@ class UpdateProductPresenter {
 
   Future<void> save(String listId) async {
     try {
+      isEditing = false;
+      wasEdited = true;
       ProductEntity product = ProductEntity(
         id: productId,
         name: productName.text,
@@ -54,6 +59,17 @@ class UpdateProductPresenter {
     } catch (e) {
       log("Não foi possível salvar a edição");
       rethrow;
+    }
+  }
+
+  Future<bool> delete(String idList) async {
+    try {
+      isEditing = false;
+      wasEdited = true;
+      await deleteUsecase.deleteProduct(idList, productId);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:shoppinglist/ui/components/dropdown_btn.dart';
 import 'package:shoppinglist/ui/components/leading_btn.dart';
 import 'package:shoppinglist/ui/pages/update_product/update_product.dart';
 import 'package:shoppinglist/ui/style/color.dart';
+import 'package:shoppinglist/ui/style/text.dart';
 
 const List<String> quantifiers = [
   "unidade(s)",
@@ -55,17 +56,61 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
         titleSpacing: 0,
         leadingWidth: 40,
         centerTitle: false,
-        leading: const LeadingBtn(),
+        leading: LeadingBtn(
+          onBack: () {
+            if (widget.presenter.isEditing) {
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    title: Text(
+                      "Atenção",
+                      style: AppText.h5(AppColors.black01),
+                    ),
+                    content: Text(
+                      "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context, false);
+                        },
+                        child: Text(
+                          "Sim",
+                          style: AppText.btn(AppColors.black01),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Não",
+                          style: AppText.btn(AppColors.primary),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else {
+              if (widget.presenter.wasEdited) Navigator.pop(context, true);
+              if (!widget.presenter.wasEdited) Navigator.pop(context, false);
+            }
+          },
+        ),
       ),
       body: buildBody(context),
     );
   }
 
   Widget buildBody(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -80,6 +125,9 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               margin: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 controller: widget.presenter.productName,
+                onChanged: (_) {
+                  widget.presenter.isEditing = true;
+                },
                 decoration: const InputDecoration(
                   hintText: "Nome do produto",
                 ),
@@ -91,6 +139,11 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   flex: 6,
                   child: TextFormField(
                     controller: widget.presenter.productQuantifierValue,
+                    onChanged: (_) {
+                      setState(() {
+                        widget.presenter.isEditing = true;
+                      });
+                    },
                     decoration: const InputDecoration(
                       hintText: "Quantidade, volume, etc",
                     ),
@@ -123,6 +176,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                       onChanged: (val) {
                         setState(() {
                           widget.presenter.productQuantifierType = val;
+                          widget.presenter.isEditing = true;
                         });
                       },
                     ),
@@ -134,6 +188,11 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               margin: const EdgeInsets.symmetric(vertical: 16),
               child: TextFormField(
                 controller: widget.presenter.productBrand,
+                onChanged: (_) {
+                  setState(() {
+                    widget.presenter.isEditing = true;
+                  });
+                },
                 decoration: const InputDecoration(
                   hintText: "Marca do produto",
                 ),
@@ -142,6 +201,11 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             TextFormField(
               maxLines: 6,
               controller: widget.presenter.productDetails,
+              onChanged: (_) {
+                setState(() {
+                  widget.presenter.isEditing = true;
+                });
+              },
               decoration: const InputDecoration(
                 hintText: "Outros detalhes, como cor, característica, etc",
               ),
@@ -158,7 +222,21 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               margin: const EdgeInsets.only(bottom: 16, top: 12),
               child: ElevatedButton(
                 onPressed: () async {
-                  await widget.presenter.save(widget.idList);
+                  try {
+                    await widget.presenter.save(widget.idList);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            "Não foi possível salvar as alterações",
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
                 },
                 child: Text("salvar".toUpperCase()),
               ),
@@ -166,7 +244,24 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             SizedBox(
               width: double.maxFinite,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    await widget.presenter.delete(widget.idList);
+                    if (mounted) Navigator.pop(context, true);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            "Não foi possível excluir o produto",
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
+                },
                 style: TextButton.styleFrom(
                   primary: Colors.red,
                 ),

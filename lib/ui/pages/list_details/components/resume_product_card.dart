@@ -6,11 +6,13 @@ import 'package:shoppinglist/ui/style/style.dart';
 class ResumeProductCard extends StatefulWidget {
   final ProductEntity product;
   final String idList;
+  final Function onUpdatePage;
 
   const ResumeProductCard({
     Key? key,
     required this.product,
     required this.idList,
+    required this.onUpdatePage,
   }) : super(key: key);
 
   @override
@@ -19,8 +21,7 @@ class ResumeProductCard extends StatefulWidget {
 
 class _ResumeProductCardState extends State<ResumeProductCard> {
   bool isEmpty(String? str) {
-    if (str == null) return true;
-    if (str.isEmpty) {
+    if (str == null || str.isEmpty) {
       return true;
     } else {
       return false;
@@ -45,12 +46,16 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
       ),
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
-        onTap: () {
-          AppNavigation.navigateToUpdateProduct(
+        onTap: () async {
+          var needsUpdatePage = await AppNavigation.navigateToUpdateProduct(
             context,
             widget.product,
             widget.idList,
           );
+
+          if (needsUpdatePage == null || needsUpdatePage == true) {
+            widget.onUpdatePage();
+          }
         },
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -79,18 +84,37 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                       ),
                     ),
                   ],
-                  if (!isEmpty(widget.product.unitOfMeasurement) &&
-                      !(isEmpty(widget.product.measure))) ...[
-                    Container(
-                      margin: const EdgeInsets.only(top: 12),
-                      child: Chip(
-                        label: Text(
-                          "${widget.product.measure} ${widget.product.unitOfMeasurement}",
-                        ),
-                        backgroundColor: AppColors.primaryLight,
-                      ),
-                    )
-                  ]
+                  Container(
+                    margin: const EdgeInsets.only(top: 12),
+                    child: Wrap(
+                      children: [
+                        if (!isEmpty(widget.product.unitOfMeasurement) &&
+                            !(isEmpty(widget.product.measure)))
+                          Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            child: Chip(
+                              label: Text(
+                                "${widget.product.measure} ${widget.product.unitOfMeasurement}",
+                              ),
+                              backgroundColor: AppColors.primaryLight,
+                            ),
+                          ),
+                        if (!isEmpty(widget.product.brand))
+                          Chip(
+                            label: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 180),
+                              child: Text(
+                                "${widget.product.brand}",
+                                softWrap: true,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            backgroundColor: AppColors.secundary,
+                          ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],
