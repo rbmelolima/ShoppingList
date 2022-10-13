@@ -84,35 +84,40 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                       ),
                     ),
                   ],
-                  Container(
-                    margin: const EdgeInsets.only(top: 12),
-                    child: Wrap(
-                      children: [
-                        if (!isEmpty(widget.product.unitOfMeasurement) &&
-                            !(isEmpty(widget.product.measure)))
-                          Container(
-                            margin: const EdgeInsets.only(right: 8),
-                            child: Chip(
-                              label: Text(
-                                "${widget.product.measure} ${widget.product.unitOfMeasurement}",
-                              ),
-                              backgroundColor: AppColors.primaryLight,
-                            ),
-                          ),
-                        if (!isEmpty(widget.product.brand))
-                          Chip(
-                            label: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 180),
-                              child: Text(
-                                "${widget.product.brand}",
-                                softWrap: true,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                  Visibility(
+                    visible: !isEmpty(widget.product.measure) ||
+                        !isEmpty(widget.product.brand),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 12),
+                      child: Wrap(
+                        children: [
+                          if (!isEmpty(widget.product.unitOfMeasurement) &&
+                              !(isEmpty(widget.product.measure)))
+                            Container(
+                              margin: const EdgeInsets.only(right: 8),
+                              child: Chip(
+                                label: Text(
+                                  "${widget.product.measure} ${widget.product.unitOfMeasurement}",
+                                ),
+                                backgroundColor: AppColors.primaryLight,
                               ),
                             ),
-                            backgroundColor: AppColors.secundary,
-                          ),
-                      ],
+                          if (!isEmpty(widget.product.brand))
+                            Chip(
+                              label: ConstrainedBox(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 180),
+                                child: Text(
+                                  "${widget.product.brand}",
+                                  softWrap: true,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              backgroundColor: AppColors.secundary,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

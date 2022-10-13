@@ -28,13 +28,21 @@ class ListDetailsPage extends StatefulWidget {
 class _ListDetailsPageState extends State<ListDetailsPage> {
   late ShoppingListEntity _list;
   late ButtonState createButtonState;
+  late FocusNode productTextFieldFocus;
   bool firstUpdate = true;
 
   @override
   void initState() {
     createButtonState = ButtonState.disable;
     widget.presenter.actualListId = widget.list.id;
+    productTextFieldFocus = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    productTextFieldFocus.dispose();
+    super.dispose();
   }
 
   @override
@@ -118,6 +126,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           Expanded(
             flex: 5,
             child: TextField(
+              focusNode: productTextFieldFocus,
               decoration: const InputDecoration(
                 hintText: "O que você gostaria de comprar?",
               ),
@@ -179,6 +188,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
         createButtonState = ButtonState.enable;
         _list = updated;
       });
+      productTextFieldFocus.requestFocus();
     } catch (e) {
       log("Erro ao adicionar um produto.");
     } finally {
