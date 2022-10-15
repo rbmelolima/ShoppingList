@@ -31,21 +31,11 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.maxFinite,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            color: Color.fromARGB(16, 0, 0, 0),
-            spreadRadius: 0,
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
         onTap: () async {
           var needsUpdatePage = await AppNavigation.navigateToUpdateProduct(
             context,
@@ -57,13 +47,23 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
             widget.onUpdatePage();
           }
         },
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        splashFactory: NoSplash.splashFactory,
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.symmetric(
             vertical: 16,
             horizontal: 14,
+          ),
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 4,
+                color: Color.fromARGB(16, 0, 0, 0),
+                spreadRadius: 0,
+                offset: Offset(0, 2),
+              )
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +88,7 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                     visible: !isEmpty(widget.product.measure) ||
                         !isEmpty(widget.product.brand),
                     child: Container(
-                      margin: const EdgeInsets.only(top: 12),
+                      margin: const EdgeInsets.only(top: 8),
                       child: Wrap(
                         children: [
                           if (!isEmpty(widget.product.unitOfMeasurement) &&

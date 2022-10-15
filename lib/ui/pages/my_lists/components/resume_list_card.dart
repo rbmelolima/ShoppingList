@@ -51,42 +51,44 @@ class _ResumeListCardState extends State<ResumeListCard> {
     bool hasProducts = widget.list.products.isNotEmpty;
 
     return Container(
-      width: double.maxFinite,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            color: Color.fromARGB(16, 0, 0, 0),
-            spreadRadius: 0,
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 14,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 4,
-              child: InkWell(
-                onTap: () async {
-                  var needsUpdatePage =
-                      await AppNavigation.navigateToListDetails(
-                    context,
-                    widget.list,
-                  );
+      margin: const EdgeInsets.only(bottom: 16),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
+        onTap: () async {
+          var needsUpdatePage = await AppNavigation.navigateToListDetails(
+            context,
+            widget.list,
+          );
 
-                  if (needsUpdatePage) {
-                    widget.onUpdatePage();
-                  }
-                },
+          if (needsUpdatePage) {
+            widget.onUpdatePage();
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 14,
+          ),
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 4,
+                color: Color.fromARGB(16, 0, 0, 0),
+                spreadRadius: 0,
+                offset: Offset(0, 2),
+              )
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 4,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -115,17 +117,17 @@ class _ResumeListCardState extends State<ResumeListCard> {
                   ],
                 ),
               ),
-            ),
-            const Spacer(),
-            PopupMenuButton<Options>(
-              child: Icon(
-                Icons.more_vert_outlined,
-                size: 18,
-                color: AppColors.black01,
+              const Spacer(),
+              PopupMenuButton<Options>(
+                child: Icon(
+                  Icons.more_vert_outlined,
+                  size: 18,
+                  color: AppColors.black01,
+                ),
+                itemBuilder: (context) => _generatePopupItensList,
               ),
-              itemBuilder: (context) => _generatePopupItensList,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
