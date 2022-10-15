@@ -76,12 +76,9 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   if (!isEmpty(widget.product.description)) ...[
-                    Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        widget.product.description!,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
+                    Text(
+                      widget.product.description!,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                   Visibility(

@@ -125,6 +125,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               margin: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 controller: widget.presenter.productName,
+                textInputAction: TextInputAction.next,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
                 onChanged: (_) {
                   widget.presenter.isEditing = true;
                 },
@@ -139,6 +141,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   flex: 6,
                   child: TextFormField(
                     controller: widget.presenter.productQuantifierValue,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => FocusScope.of(context).nextFocus(),
                     onChanged: (_) {
                       setState(() {
                         widget.presenter.isEditing = true;
@@ -188,6 +192,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               margin: const EdgeInsets.symmetric(vertical: 16),
               child: TextFormField(
                 controller: widget.presenter.productBrand,
+                textInputAction: TextInputAction.next,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
                 onChanged: (_) {
                   setState(() {
                     widget.presenter.isEditing = true;
@@ -201,6 +207,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             TextFormField(
               maxLines: 6,
               controller: widget.presenter.productDetails,
+              textInputAction: TextInputAction.done,
+              onEditingComplete: () => FocusScope.of(context).unfocus(),
               onChanged: (_) {
                 setState(() {
                   widget.presenter.isEditing = true;
@@ -223,6 +231,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               child: ElevatedButton(
                 onPressed: () async {
                   try {
+                    FocusScope.of(context).unfocus();
                     await widget.presenter.save(widget.idList);
                   } catch (e) {
                     if (mounted) {

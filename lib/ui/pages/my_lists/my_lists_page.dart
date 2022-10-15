@@ -143,7 +143,7 @@ class MyListsPage extends StatelessWidget {
                       decoration: const InputDecoration(
                         hintText: "Qual o nome da sua lista de compras?",
                       ),
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.go,
                       onSubmitted: (_) => onCloseKeyboard(context),
                       controller: presenter.createListName,
                       maxLines: 1,
@@ -187,6 +187,7 @@ class MyListsPage extends StatelessWidget {
                                     });
 
                                     if (!mounted) return;
+                                    FocusScope.of(context).unfocus();
                                     Navigator.pop(context);
                                     AppNavigation.navigateToListDetails(
                                       context,
