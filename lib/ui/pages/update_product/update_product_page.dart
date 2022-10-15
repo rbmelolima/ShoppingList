@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shoppinglist/domain/entities/product_entity.dart';
 import 'package:shoppinglist/ui/components/dropdown_btn.dart';
 import 'package:shoppinglist/ui/components/leading_btn.dart';
+import 'package:shoppinglist/ui/components/prevent_navigation.dart';
 import 'package:shoppinglist/ui/pages/update_product/update_product.dart';
 import 'package:shoppinglist/ui/style/color.dart';
-import 'package:shoppinglist/ui/style/text.dart';
 
 const List<String> quantifiers = [
   "unidade(s)",
@@ -59,41 +60,11 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
         leading: LeadingBtn(
           onBack: () {
             if (widget.presenter.isEditing) {
-              showDialog(
-                context: context,
-                builder: (_) {
-                  return AlertDialog(
-                    title: Text(
-                      "Atenção",
-                      style: AppText.h5(AppColors.black01),
-                    ),
-                    content: Text(
-                      "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context, false);
-                        },
-                        child: Text(
-                          "Sim",
-                          style: AppText.btn(AppColors.black01),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          "Não",
-                          style: AppText.btn(AppColors.primary),
-                        ),
-                      ),
-                    ],
-                  );
-                },
+              preventNavigation(
+                context,
+                title: 'Alerta',
+                content:
+                    "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
               );
             } else {
               if (widget.presenter.wasEdited) Navigator.pop(context, true);
@@ -141,6 +112,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   flex: 6,
                   child: TextFormField(
                     controller: widget.presenter.productQuantifierValue,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     textInputAction: TextInputAction.next,
                     onEditingComplete: () => FocusScope.of(context).nextFocus(),
                     onChanged: (_) {
@@ -205,7 +178,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               ),
             ),
             TextFormField(
-              maxLines: 6,
+              maxLines: 3,
               controller: widget.presenter.productDetails,
               textInputAction: TextInputAction.done,
               onEditingComplete: () => FocusScope.of(context).unfocus(),

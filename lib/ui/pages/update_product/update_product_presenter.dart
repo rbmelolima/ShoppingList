@@ -6,6 +6,16 @@ import 'package:shoppinglist/domain/usecases/delete_product_on_list_usecase.dart
 import 'package:shoppinglist/domain/usecases/update_product_on_list_usecase.dart';
 
 class UpdateProductPresenter {
+  bool isEditing = false;
+  bool wasEdited = false;
+
+  late TextEditingController productName;
+  late TextEditingController productQuantifierValue;
+  late TextEditingController productBrand;
+  late TextEditingController productDetails;
+  late String? productQuantifierType;
+  late String productId;
+
   final UpdateProductOnListUsecase updateUsecase;
   final DeleteProductOnListUsecase deleteUsecase;
 
@@ -22,16 +32,6 @@ class UpdateProductPresenter {
     productBrand.dispose();
     productDetails.dispose();
   }
-
-  late TextEditingController productName;
-  late TextEditingController productQuantifierValue;
-  late TextEditingController productBrand;
-  late TextEditingController productDetails;
-  late String? productQuantifierType;
-  late String productId;
-
-  bool isEditing = false;
-  bool wasEdited = false;
 
   void fill(ProductEntity initialValue) {
     productName.text = initialValue.name;
