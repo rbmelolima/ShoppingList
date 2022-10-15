@@ -16,7 +16,17 @@ class UpdateListPresenter {
   final UpdateListUsecase updateListUsecase;
   final DeleteListUsecase deleteListUsecase;
 
-  UpdateListPresenter(this.updateListUsecase, this.deleteListUsecase);
+  UpdateListPresenter(this.updateListUsecase, this.deleteListUsecase) {
+    listName = TextEditingController();
+    listDescription = TextEditingController();
+    listTags = TextEditingController();
+  }
+
+  void dispose() {
+    listName.dispose();
+    listDescription.dispose();
+    listTags.dispose();
+  }
 
   void fill(ShoppingListEntity list) {
     actualList = list;

@@ -9,10 +9,17 @@ class AppNavigation {
     return await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => makeUpdateProductPage(
-          idList,
-          product,
-        ),
+        builder: (context) => makeUpdateProductPage(idList, product),
+      ),
+    );
+  }
+
+  static Future<dynamic> navigateToUpdateList(
+      BuildContext context, ShoppingListEntity list) async {
+    return await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => makeUpdateListPage(list),
       ),
     );
   }

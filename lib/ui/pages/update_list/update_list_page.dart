@@ -3,7 +3,6 @@ import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/ui/components/leading_btn.dart';
 import 'package:shoppinglist/ui/components/prevent_navigation.dart';
 import 'package:shoppinglist/ui/style/color.dart';
-import 'package:shoppinglist/ui/style/text.dart';
 
 import 'update_list_presenter.dart';
 
@@ -26,11 +25,13 @@ class _UpdateProductPageState extends State<UpdateListPage> {
 
   @override
   void initState() {
+    widget.presenter.fill(widget.list);
     super.initState();
   }
 
   @override
   void dispose() {
+    widget.presenter.dispose();
     super.dispose();
   }
 
@@ -78,18 +79,15 @@ class _UpdateProductPageState extends State<UpdateListPage> {
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              child: TextFormField(
-                controller: widget.presenter.listName,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                onChanged: (_) {
-                  widget.presenter.isEditing = true;
-                },
-                decoration: const InputDecoration(
-                  hintText: "Nome da lista",
-                ),
+            TextFormField(
+              controller: widget.presenter.listName,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              onChanged: (_) {
+                widget.presenter.isEditing = true;
+              },
+              decoration: const InputDecoration(
+                hintText: "Nome da lista",
               ),
             ),
             Container(
