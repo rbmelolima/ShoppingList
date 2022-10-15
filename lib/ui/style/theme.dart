@@ -76,6 +76,13 @@ ThemeData defaultTheme() {
           width: 2,
         ),
       ),
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: const BorderSide(
+          color: Colors.transparent,
+          width: 2,
+        ),
+      ),
     ),
   );
 }

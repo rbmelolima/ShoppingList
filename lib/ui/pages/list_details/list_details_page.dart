@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
+import 'package:shoppinglist/main/routes/navigation.dart';
 import 'package:shoppinglist/ui/components/leading_btn.dart';
 import 'package:shoppinglist/ui/helpers/button_state.dart';
 import 'package:shoppinglist/ui/pages/list_details/components/components.dart';
@@ -205,14 +206,27 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 8,
-            child: Text(
-              _list.name.toString(),
-              style: Theme.of(context).textTheme.headline3,
-              softWrap: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _list.name.toString(),
+                  style: Theme.of(context).textTheme.headline3,
+                  softWrap: true,
+                ),
+                if (_list.description != null && _list.description != "")
+                  Container(
+                    margin: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      _list.description.toString(),
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+              ],
             ),
           ),
           const Spacer(),
@@ -325,7 +339,18 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
       PopupMenuItem<Options>(
         value: Options.edit,
         onTap: () async {
-          try {} catch (e) {
+          try {
+            await Future.delayed(Duration.zero, () async {
+              await AppNavigation.navigateToUpdateList(context, _list);
+
+              var updatedList = await widget.presenter.getList();
+              if (updatedList != null) {
+                setState(() {
+                  _list = updatedList;
+                });
+              }
+            });
+          } catch (e) {
             log(e.toString());
           }
         },

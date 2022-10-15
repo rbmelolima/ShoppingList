@@ -3,6 +3,7 @@ import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/ui/components/leading_btn.dart';
 import 'package:shoppinglist/ui/components/prevent_navigation.dart';
 import 'package:shoppinglist/ui/style/color.dart';
+import 'package:shoppinglist/utils/utils.dart';
 
 import 'update_list_presenter.dart';
 
@@ -95,7 +96,7 @@ class _UpdateProductPageState extends State<UpdateListPage> {
               child: TextFormField(
                 maxLines: 3,
                 controller: widget.presenter.listDescription,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
                 onEditingComplete: () => FocusScope.of(context).nextFocus(),
                 onChanged: (_) {
                   setState(() {
@@ -108,17 +109,26 @@ class _UpdateProductPageState extends State<UpdateListPage> {
                 ),
               ),
             ),
-            TextFormField(
-              controller: widget.presenter.listTags,
-              textInputAction: TextInputAction.done,
-              onEditingComplete: () => FocusScope.of(context).unfocus(),
-              onChanged: (_) {
-                setState(() {
-                  widget.presenter.isEditing = true;
-                });
-              },
-              decoration: const InputDecoration(
-                hintText: "Tags",
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: TextFormField(
+                readOnly: true,
+                initialValue: formatDate(DateTime.parse(widget.list.createdAt)),
+                decoration: const InputDecoration(
+                  labelText: "Data de criação",
+                  enabled: false,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: TextFormField(
+                readOnly: true,
+                initialValue: formatDate(DateTime.parse(widget.list.updatedAt)),
+                decoration: const InputDecoration(
+                  labelText: "Última atualização",
+                  enabled: false,
+                ),
               ),
             ),
             Container(

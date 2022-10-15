@@ -44,8 +44,8 @@ class UpdateListPresenter {
         id: actualList.id,
         createdAt: actualList.createdAt,
         updatedAt: DateTime.now().toString(),
-        name: listName.text,
-        description: listDescription.text,
+        name: listName.text.trim(),
+        description: listDescription.text.trim(),
         tags: listTags.text != "" ? listTags.text.split(",") : [],
         products: actualList.products,
       );

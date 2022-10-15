@@ -48,11 +48,11 @@ class UpdateProductPresenter {
       wasEdited = true;
       ProductEntity product = ProductEntity(
         id: productId,
-        name: productName.text,
-        brand: productBrand.text,
-        measure: productQuantifierValue.text,
+        name: productName.text.trim(),
+        brand: productBrand.text.trim(),
+        measure: productQuantifierValue.text.trim(),
         unitOfMeasurement: productQuantifierType,
-        description: productDetails.text,
+        description: productDetails.text.trim(),
       );
 
       await updateUsecase.updateProduct(listId, product);
