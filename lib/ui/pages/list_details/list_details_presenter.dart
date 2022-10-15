@@ -33,8 +33,8 @@ class ListDetailsPresenter {
     try {
       return await getListUsecase.getById(actualListId);
     } catch (e) {
-      
       log("Não foi possível recuperar a lista atual");
+      return null;
     }
   }
 

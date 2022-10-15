@@ -6,7 +6,6 @@ import 'package:shoppinglist/ui/style/text.dart';
 
 enum Options { clone, delete, share }
 
-//TODO: melhorar a área de click
 class ResumeListCard extends StatefulWidget {
   final ShoppingListEntity list;
 
