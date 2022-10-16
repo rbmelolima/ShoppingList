@@ -11,10 +11,15 @@ const List<String> quantifiers = [
   "unidade(s)",
   "ml",
   "l",
-  "cm",
-  "kg",
-  "g",
   "mg",
+  "g",
+  "kg",
+  "caixa(s)",
+  "embalagem(ns)",
+  "garrafa(s)"
+      "lata(s)",
+  "pacote(s)"
+      "galão(ões)"
 ];
 
 class UpdateProductPage extends StatefulWidget {
