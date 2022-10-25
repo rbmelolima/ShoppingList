@@ -143,7 +143,7 @@ class MyListsPage extends StatelessWidget {
                       decoration: const InputDecoration(
                         hintText: "Qual o nome da sua lista de compras?",
                       ),
-                      textInputAction: TextInputAction.go,
+                      textInputAction: TextInputAction.done,
                       onSubmitted: (_) => onCloseKeyboard(context),
                       controller: presenter.createListName,
                       maxLines: 1,
@@ -174,8 +174,7 @@ class MyListsPage extends StatelessWidget {
                       return SizedBox(
                         width: double.maxFinite,
                         child: ElevatedButton(
-                          onPressed: btnState == ButtonState.enable ||
-                                  presenter.createListName.text.isNotEmpty
+                          onPressed: btnState == ButtonState.enable || presenter.createListName.text.isNotEmpty
                               ? () async {
                                   try {
                                     setState(() {

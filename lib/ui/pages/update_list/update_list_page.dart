@@ -51,8 +51,7 @@ class _UpdateProductPageState extends State<UpdateListPage> {
               preventNavigation(
                 context,
                 title: 'Alerta',
-                content:
-                    "Você ainda não terminou de editar a lista.\n\nDeseja realmente sair?",
+                content: "Você ainda não terminou de editar a lista.\n\nDeseja realmente sair?",
               );
             } else {
               if (widget.presenter.wasEdited) Navigator.pop(context, true);
@@ -104,8 +103,7 @@ class _UpdateProductPageState extends State<UpdateListPage> {
                   });
                 },
                 decoration: const InputDecoration(
-                  hintText:
-                      "Características da sua lista, como propósito, data de uso e outros",
+                  hintText: "Características da sua lista, como propósito, data de uso e outros",
                 ),
               ),
             ),
@@ -139,6 +137,7 @@ class _UpdateProductPageState extends State<UpdateListPage> {
                   try {
                     FocusScope.of(context).unfocus();
                     await widget.presenter.save();
+                    if (mounted) Navigator.pop(context, true);
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

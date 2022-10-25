@@ -16,10 +16,10 @@ const List<String> quantifiers = [
   "kg",
   "caixa(s)",
   "embalagem(ns)",
-  "garrafa(s)"
-      "lata(s)",
-  "pacote(s)"
-      "galão(ões)"
+  "garrafa(s)",
+  "lata(s)",
+  "pacote(s)",
+  "galão(ões)",
 ];
 
 class UpdateProductPage extends StatefulWidget {
@@ -68,8 +68,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               preventNavigation(
                 context,
                 title: 'Alerta',
-                content:
-                    "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
+                content: "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
               );
             } else {
               if (widget.presenter.wasEdited) Navigator.pop(context, true);
@@ -114,7 +113,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             Row(
               children: [
                 Expanded(
-                  flex: 6,
+                  flex: 5,
                   child: TextFormField(
                     controller: widget.presenter.productQuantifierValue,
                     keyboardType: TextInputType.number,
@@ -131,7 +130,6 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
                 Expanded(
                   flex: 4,
                   child: Container(
@@ -139,6 +137,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                       vertical: 6,
                       horizontal: 12,
                     ),
+                    margin: const EdgeInsets.only(left: 12),
                     decoration: const BoxDecoration(
                       color: Color.fromRGBO(33, 33, 33, 0.05),
                       borderRadius: BorderRadius.all(
@@ -146,8 +145,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                       ),
                     ),
                     child: DropdownBtn(
-                      items: quantifiers
-                          .map<DropdownMenuItem<String>>((String value) {
+                      items: quantifiers.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -211,6 +209,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   try {
                     FocusScope.of(context).unfocus();
                     await widget.presenter.save(widget.idList);
+                    if (mounted) Navigator.pop(context, true);
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
