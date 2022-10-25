@@ -54,7 +54,6 @@ class MyListsPresenter {
         name: entity.name,
         description: entity.description,
         products: entity.products,
-        tags: entity.tags,
       );
 
       await createUsecase.create(clonedList);
@@ -81,7 +80,6 @@ class MyListsPresenter {
         name: createListName.text.trim(),
         description: "",
         products: [],
-        tags: [],
       );
 
       await Future.delayed(const Duration(seconds: 2), () async {

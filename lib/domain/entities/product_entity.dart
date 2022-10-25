@@ -8,6 +8,7 @@ class ProductEntity {
     this.unitOfMeasurement,
     this.brand,
     this.description,
+    this.unitPrice,
   });
 
   final String id;
@@ -16,6 +17,7 @@ class ProductEntity {
   final String? unitOfMeasurement;
   final String? brand;
   final String? description;
+  final double? unitPrice;
 
   factory ProductEntity.fromJson(String str) {
     return ProductEntity.fromMap(
@@ -33,6 +35,7 @@ class ProductEntity {
       unitOfMeasurement: json["unitOfMeasurement"],
       brand: json["brand"],
       description: json["description"],
+      unitPrice: json["unitPrice"],
     );
   }
 
@@ -44,6 +47,7 @@ class ProductEntity {
       "unitOfMeasurement": unitOfMeasurement,
       "brand": brand,
       "description": description,
+      "unitPrice": unitPrice,
     };
   }
 }

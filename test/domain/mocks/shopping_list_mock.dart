@@ -8,11 +8,6 @@ ShoppingListEntity generateShoppingListEntityMock() {
     createdAt: DateTime.now().toString(),
     updatedAt: DateTime.now().toString(),
     description: faker.lorem.sentences(2).toString(),
-    tags: [
-      faker.lorem.word(),
-      faker.lorem.word(),
-      faker.lorem.word(),
-    ],
     products: [],
   );
 }

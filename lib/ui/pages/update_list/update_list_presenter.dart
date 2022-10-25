@@ -19,20 +19,17 @@ class UpdateListPresenter {
   UpdateListPresenter(this.updateListUsecase, this.deleteListUsecase) {
     listName = TextEditingController();
     listDescription = TextEditingController();
-    listTags = TextEditingController();
   }
 
   void dispose() {
     listName.dispose();
     listDescription.dispose();
-    listTags.dispose();
   }
 
   void fill(ShoppingListEntity list) {
     actualList = list;
     listName.text = list.name;
     listDescription.text = list.description ?? "";
-    listTags.text = list.tags != null ? list.tags!.join(", ") : "";
   }
 
   Future<void> save() async {
@@ -46,7 +43,6 @@ class UpdateListPresenter {
         updatedAt: DateTime.now().toString(),
         name: listName.text.trim(),
         description: listDescription.text.trim(),
-        tags: listTags.text != "" ? listTags.text.split(",") : [],
         products: actualList.products,
       );
 

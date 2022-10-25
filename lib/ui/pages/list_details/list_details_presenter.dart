@@ -55,7 +55,6 @@ class ListDetailsPresenter {
         name: entity.name,
         description: entity.description,
         products: entity.products,
-        tags: entity.tags,
       );
 
       await createListUsecase.create(clonedList);
