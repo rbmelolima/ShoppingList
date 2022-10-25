@@ -6,3 +6,4 @@ export './local_delete_product.dart';
 export './local_get_list.dart';
 export './local_update_list.dart';
 export './local_update_product.dart';
+export './web_crawler_price_analysis.dart';
