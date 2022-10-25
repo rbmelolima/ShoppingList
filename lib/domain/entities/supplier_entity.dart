@@ -11,7 +11,7 @@ class SupplierEntity {
 
   final String name;
   final List<ProductEntity> products;
-  final double totalPrice;
+  final String totalPrice;
 
   factory SupplierEntity.fromJson(String str) => SupplierEntity.fromMap(json.decode(str));
 

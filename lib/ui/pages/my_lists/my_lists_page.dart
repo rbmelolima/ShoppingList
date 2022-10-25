@@ -144,6 +144,7 @@ class MyListsPage extends StatelessWidget {
                         hintText: "Qual o nome da sua lista de compras?",
                       ),
                       textInputAction: TextInputAction.done,
+                      textCapitalization: TextCapitalization.words,
                       onSubmitted: (_) => onCloseKeyboard(context),
                       controller: presenter.createListName,
                       maxLines: 1,

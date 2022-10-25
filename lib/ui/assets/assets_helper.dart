@@ -1,6 +1,6 @@
-class Assets{
+class Assets {
   static String illustrationPreLogin = "ilustracao-pre-login.svg";
-  static String illustrationLoadingAnalysis = "shopping_lady.json";
+  static String illustrationLoadingAnalysis = "shopping.json";
 }
 
 String pathOfAsset(String nameOfAsset) => "lib/ui/assets/images/$nameOfAsset";

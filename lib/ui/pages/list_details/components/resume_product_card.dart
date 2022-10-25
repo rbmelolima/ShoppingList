@@ -65,8 +65,8 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
               )
             ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,14 +82,12 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                     ),
                   ],
                   Visibility(
-                    visible: !isEmpty(widget.product.measure) ||
-                        !isEmpty(widget.product.brand),
+                    visible: !isEmpty(widget.product.measure) || !isEmpty(widget.product.brand),
                     child: Container(
                       margin: const EdgeInsets.only(top: 8),
                       child: Wrap(
                         children: [
-                          if (!isEmpty(widget.product.unitOfMeasurement) &&
-                              !(isEmpty(widget.product.measure)))
+                          if (!isEmpty(widget.product.unitOfMeasurement) && !(isEmpty(widget.product.measure)))
                             Container(
                               margin: const EdgeInsets.only(right: 8),
                               child: Chip(
@@ -102,8 +100,7 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                           if (!isEmpty(widget.product.brand))
                             Chip(
                               label: ConstrainedBox(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 180),
+                                constraints: const BoxConstraints(maxWidth: 180),
                                 child: Text(
                                   "${widget.product.brand}",
                                   softWrap: true,
@@ -119,6 +116,12 @@ class _ResumeProductCardState extends State<ResumeProductCard> {
                   ),
                 ],
               ),
+              const Spacer(),
+              Icon(
+                Icons.mode_edit_outline,
+                color: Colors.grey[400],
+                size: 16,
+              )
             ],
           ),
         ),

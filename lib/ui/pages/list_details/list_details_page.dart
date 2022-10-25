@@ -100,7 +100,9 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 margin: const EdgeInsets.only(top: 8),
                 width: double.maxFinite,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await AppNavigation.navigateToPriceAnalysis(context, widget.list);
+                  },
                   style: TextButton.styleFrom(
                     primary: AppColors.secundaryDark,
                     padding: const EdgeInsets.all(16),
@@ -132,6 +134,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 hintText: "O que você gostaria de comprar?",
               ),
               textInputAction: TextInputAction.done,
+              textCapitalization: TextCapitalization.words,
               onSubmitted: (_) => () {},
               controller: widget.presenter.createProduct,
               maxLines: 1,
@@ -166,9 +169,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 child: IconButton(
                   color: Colors.white,
                   disabledColor: Colors.white,
-                  onPressed: createButtonState == ButtonState.enable
-                      ? onAddProduct
-                      : null,
+                  onPressed: createButtonState == ButtonState.enable ? onAddProduct : null,
                   icon: const Icon(Icons.add),
                 ),
               );

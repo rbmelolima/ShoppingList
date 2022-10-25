@@ -15,7 +15,6 @@ const List<String> quantifiers = [
   "g",
   "kg",
   "caixa(s)",
-  "embalagem(ns)",
   "garrafa(s)",
   "lata(s)",
   "pacote(s)",
@@ -113,7 +112,6 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             Row(
               children: [
                 Expanded(
-                  flex: 5,
                   child: TextFormField(
                     controller: widget.presenter.productQuantifierValue,
                     keyboardType: TextInputType.number,
@@ -131,7 +129,6 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   ),
                 ),
                 Expanded(
-                  flex: 4,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 6,

@@ -62,7 +62,7 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
               unitPrice: product.precoUnitario,
             );
           }).toList(),
-          totalPrice: double.parse(listSuppliersModel.fornecedorMaisCompetitivo.precoTotal),
+          totalPrice: listSuppliersModel.fornecedorMaisCompetitivo.precoTotal,
         ),
       );
 
@@ -70,7 +70,7 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
         list.add(
           SupplierEntity(
             name: supplier.nome,
-            totalPrice: double.parse(supplier.precoTotal),
+            totalPrice: supplier.precoTotal,
             products: supplier.produtos.map((product) {
               return ProductEntity(
                 id: generateMd5(product.nome),

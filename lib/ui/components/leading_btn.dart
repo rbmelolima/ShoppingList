@@ -3,10 +3,12 @@ import 'package:shoppinglist/ui/style/color.dart';
 
 class LeadingBtn extends StatelessWidget {
   final Function? onBack;
+  final Color? color;
 
   const LeadingBtn({
     Key? key,
     this.onBack,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class LeadingBtn extends StatelessWidget {
       splashRadius: 1,
       icon: Icon(
         Icons.chevron_left,
-        color: AppColors.black01,
+        color: color ?? AppColors.black01,
       ),
     );
   }
