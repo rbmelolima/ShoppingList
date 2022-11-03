@@ -200,7 +200,7 @@ class MyListsPage extends StatelessWidget {
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(
-                            primary: AppColors.primary,
+                            foregroundColor: AppColors.primary,
                           ),
                           child: Text(
                             "Criar lista",

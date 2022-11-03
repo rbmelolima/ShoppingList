@@ -246,7 +246,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   }
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.red,
+                  foregroundColor: Colors.red,
                 ),
                 child: Text("excluir produto".toUpperCase()),
               ),

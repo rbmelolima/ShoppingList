@@ -7,6 +7,8 @@ import 'package:shoppinglist/domain/entities/supplier_entity.dart';
 import 'package:shoppinglist/domain/usecases/price_analysis_usecase.dart';
 import 'package:shoppinglist/utils/generate_md5.dart';
 
+import '../mock/price_analysis.dart';
+
 class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
   final HttpClient httpClient;
 
@@ -23,43 +25,20 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
         body: _makeBodySearch(shoppingList),
       ); 
       */
-      var response = {
-        "fornecedores": [
-          {
-            "nome": "Pão de Açúcar",
-            "produtos": [
-              {"nome": "Maçã Nacional Qualitá 1kg", "quantidade": 1, "precoUnitario": 15.39}
-            ],
-            "precoTotal": "R\$ 15,39"
-          },
-          {
-            "nome": "Carrefour",
-            "produtos": [
-              {"nome": "Maçã Pink Lady - 1kg", "quantidade": 1, "precoUnitario": 11.9}
-            ],
-            "precoTotal": "R\$ 11,90"
-          }
-        ],
-        "fornecedorMaisCompetitivo": {
-          "nome": "Clube Extra",
-          "produtos": [
-            {"nome": "Maçã Pré-Lavada Gala Pra Valer 1kg", "quantidade": 1, "precoUnitario": 11.39}
-          ],
-          "precoTotal": "R\$ 11,39"
-        }
-      };
 
-      ShoppingListSupplierModel listSuppliersModel = ShoppingListSupplierModel.fromMap(response);
+      var listSuppliersModel = ShoppingListSupplierModel.fromMap(priceAnalysisResponse);
 
       List<SupplierEntity> list = [];
       list.add(
         SupplierEntity(
           name: listSuppliersModel.fornecedorMaisCompetitivo.nome,
+          isBetterOption: true,
           products: listSuppliersModel.fornecedorMaisCompetitivo.produtos.map((product) {
             return ProductEntity(
               id: generateMd5(product.nome),
               name: product.nome,
               unitPrice: product.precoUnitario,
+              description: product.descricao,
             );
           }).toList(),
           totalPrice: listSuppliersModel.fornecedorMaisCompetitivo.precoTotal,
@@ -71,11 +50,13 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
           SupplierEntity(
             name: supplier.nome,
             totalPrice: supplier.precoTotal,
+            isBetterOption: false,
             products: supplier.produtos.map((product) {
               return ProductEntity(
                 id: generateMd5(product.nome),
                 name: product.nome,
                 unitPrice: product.precoUnitario,
+                description: product.descricao,
               );
             }).toList(),
           ),
@@ -94,9 +75,10 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
       "produtos": shoppingList.products
           .map(
             (e) => {
-              "nome": "${e.name} ${e.description} ${e.brand}",
+              "nome": e.name,
               "quantidade": e.measure,
               "unidadeMedida": e.unitOfMeasurement,
+              "descricao": " ${e.description} ${e.brand}",
             },
           )
           .toList(),

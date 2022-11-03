@@ -104,7 +104,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                     await AppNavigation.navigateToPriceAnalysis(context, widget.list);
                   },
                   style: TextButton.styleFrom(
-                    primary: AppColors.secundaryDark,
+                    foregroundColor: AppColors.secundaryDark,
                     padding: const EdgeInsets.all(16),
                   ),
                   child: Text("buscar menores preços".toUpperCase()),

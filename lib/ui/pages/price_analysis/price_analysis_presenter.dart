@@ -14,9 +14,9 @@ class PriceAnalysisPresenter {
   Future<List<SupplierEntity>> analysis(ShoppingListEntity list) async {
     try {
       //TODO: remover timer
-      return await Future.delayed(const Duration(seconds: 10), () async {
-        return await priceAnalysisUsecase.analysis(list);
-      });
+      // return await Future.delayed(const Duration(seconds: 0), () async {
+      return await priceAnalysisUsecase.analysis(list);
+      // });
     } catch (e) {
       log(e.toString());
       rethrow;

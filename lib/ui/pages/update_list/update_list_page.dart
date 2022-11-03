@@ -177,7 +177,7 @@ class _UpdateProductPageState extends State<UpdateListPage> {
                   }
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.red,
+                  foregroundColor: Colors.red,
                 ),
                 child: Text("excluir lista".toUpperCase()),
               ),

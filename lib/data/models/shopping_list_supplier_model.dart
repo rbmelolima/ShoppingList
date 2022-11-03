@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final shoppingListSupplierModel = shoppingListSupplierModelFromMap(jsonString);
-
 import 'dart:convert';
 
 class ShoppingListSupplierModel {
@@ -61,9 +57,11 @@ class ProductModel {
     required this.nome,
     required this.quantidade,
     required this.precoUnitario,
+    required this.descricao,
   });
 
   final String nome;
+  final String descricao;
   final int quantidade;
   final double precoUnitario;
 
@@ -73,6 +71,7 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> json) => ProductModel(
         nome: json["nome"],
+        descricao: json["descricao"],
         quantidade: json["quantidade"],
         precoUnitario: json["precoUnitario"].toDouble(),
       );
@@ -81,6 +80,6 @@ class ProductModel {
         "nome": nome,
         "quantidade": quantidade,
         "precoUnitario": precoUnitario,
+        "descricao": descricao,
       };
 }
-
