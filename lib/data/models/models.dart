@@ -1,0 +1,1 @@
+export './shopping_list_supplier_model.dart';
