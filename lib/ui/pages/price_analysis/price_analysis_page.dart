@@ -51,7 +51,8 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
     List<Widget> pages = [];
 
     for (int i = 0; i < data.length; i++) {
-      String subtitle = data[i].isBetterOption ? "Melhor Opção" : "Opção ${i + 1}";
+      String subtitle =
+          data[i].isBetterOption ? "Melhor Opção" : "Opção ${i + 1}";
       tabs.add(
         Tab(
           text: subtitle,
@@ -81,15 +82,12 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
         ),
         backgroundColor: AppColors.backgroundScaffold,
         body: TabBarView(children: pages),
-        bottomSheet: Container(
-          child: Row(children: [Text("Preço Total $actualValue")]),
-        ),
       ),
     );
   }
 
   Widget buildOptionPage(SupplierEntity supplier, String subtitle) {
-    return SingleChildScrollView(
+    return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,63 +99,93 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
           Text(
             subtitle,
             style: AppText.h5(
-              subtitle.toUpperCase().contains("MELHOR") ? AppColors.secundaryDark : AppColors.grey,
+              subtitle.toUpperCase().contains("MELHOR")
+                  ? AppColors.secundaryDark
+                  : AppColors.grey,
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 24),
-            child: ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: double.maxFinite,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        flex: 4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              supplier.products[index].name,
-                              style: AppText.h5(
-                                AppColors.primaryDark,
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 24),
+              child: ListView.separated(
+                //physics: const NeverScrollableScrollPhysics(),
+                //shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    width: double.maxFinite,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                supplier.products[index].name,
+                                style: AppText.h5(
+                                  AppColors.primaryDark,
+                                ),
                               ),
-                            ),
-                            Text(
-                              supplier.products[index].description ?? "",
-                              style: AppText.p(
-                                AppColors.black03,
+                              Text(
+                                supplier.products[index].description ?? "",
+                                style: AppText.p(
+                                  AppColors.black03,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 12),
-                        child: Chip(
-                          backgroundColor: AppColors.primaryLight,
-                          labelStyle: AppText.chip(AppColors.primaryDark),
-                          label: Text(
-                            supplier.totalPrice,
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return const Divider(
-                  color: Color(0xFFB7B7B7),
-                  height: 24,
-                );
-              },
-              itemCount: supplier.products.length,
+                        Container(
+                          margin: const EdgeInsets.only(left: 12),
+                          child: Chip(
+                            backgroundColor: AppColors.primaryLight,
+                            labelStyle: AppText.chip(AppColors.primaryDark),
+                            label: Text(
+                              supplier.totalPrice,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const Divider(
+                    color: Color(0xFFB7B7B7),
+                    height: 24,
+                  );
+                },
+                itemCount: supplier.products.length,
+              ),
             ),
           ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Total",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      supplier.totalPrice,
+                      style: AppText.h4(AppColors.secundaryDark),
+                    )
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(22),
+                ),
+                child: const Text("Compartilhar"),
+              )
+            ],
+          )
         ],
       ),
     );
