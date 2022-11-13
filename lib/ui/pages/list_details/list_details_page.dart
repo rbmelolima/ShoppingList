@@ -66,7 +66,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           onBack: () => Navigator.pop(context, true),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -77,31 +77,34 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 child: const NotFoundProducts(),
               )
             ] else ...[
-              ListView.builder(
-                itemCount: _list.products.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ResumeProductCard(
-                    product: _list.products[index],
-                    idList: _list.id,
-                    onUpdatePage: () async {
-                      var updatedList = await widget.presenter.getList();
-                      if (updatedList != null) {
-                        setState(() {
-                          _list = updatedList;
-                        });
-                      }
-                    },
-                  );
-                },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _list.products.length,
+                  /*  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(), */
+                  itemBuilder: (context, index) {
+                    return ResumeProductCard(
+                      product: _list.products[index],
+                      idList: _list.id,
+                      onUpdatePage: () async {
+                        var updatedList = await widget.presenter.getList();
+                        if (updatedList != null) {
+                          setState(() {
+                            _list = updatedList;
+                          });
+                        }
+                      },
+                    );
+                  },
+                ),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 8),
                 width: double.maxFinite,
                 child: TextButton(
                   onPressed: () async {
-                    await AppNavigation.navigateToPriceAnalysis(context, widget.list);
+                    await AppNavigation.navigateToPriceAnalysis(
+                        context, widget.list);
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.secundaryDark,
@@ -169,7 +172,9 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                 child: IconButton(
                   color: Colors.white,
                   disabledColor: Colors.white,
-                  onPressed: createButtonState == ButtonState.enable ? onAddProduct : null,
+                  onPressed: createButtonState == ButtonState.enable
+                      ? onAddProduct
+                      : null,
                   icon: const Icon(Icons.add),
                 ),
               );
@@ -201,7 +206,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
     }
   }
 
-  Widget _buildWhiteSpace() => Container(height: 96);
+  Widget _buildWhiteSpace() => Container(height: 76);
 
   Widget _buildHeader(BuildContext context) {
     return Container(
