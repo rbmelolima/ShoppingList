@@ -65,7 +65,7 @@ class MyListsPresenter {
 
   Future<void> share(ShoppingListEntity entity) async {
     try {
-      await shareUsecase.share(entity);
+      await shareUsecase.shareList(entity);
     } catch (e) {
       log("Erro ao compartilhar lista");
     }

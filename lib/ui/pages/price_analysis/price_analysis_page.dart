@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/domain/entities/supplier_entity.dart';
@@ -22,8 +24,6 @@ class PriceAnalysisPage extends StatefulWidget {
 }
 
 class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
-  String actualValue = "R\$ 80,00";
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SupplierEntity>>(
@@ -108,9 +108,11 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 24),
               child: ListView.separated(
-                //physics: const NeverScrollableScrollPhysics(),
-                //shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  var price = supplier.products[index].unitPrice!
+                      .toStringAsFixed(2)
+                      .replaceAll(".", ",");
+
                   return SizedBox(
                     width: double.maxFinite,
                     child: Row(
@@ -142,7 +144,7 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                             backgroundColor: AppColors.primaryLight,
                             labelStyle: AppText.chip(AppColors.primaryDark),
                             label: Text(
-                              supplier.totalPrice,
+                              "R\$ $price",
                             ),
                           ),
                         ),
@@ -178,7 +180,9 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await widget.presenter.share(supplier);
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(22),
                 ),
