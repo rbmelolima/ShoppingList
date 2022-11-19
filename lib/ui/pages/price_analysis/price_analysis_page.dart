@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/domain/entities/supplier_entity.dart';
@@ -34,13 +32,13 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
         }
 
         if (snapshot.hasError) {
-          return Container();
+          return const ErrorOnAnalysis();
         }
 
         if (snapshot.hasData) {
           return _buildBody(context, snapshot.data!);
         } else {
-          return Container();
+          return const ErrorOnAnalysis();
         }
       },
     );
@@ -49,8 +47,13 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
   Widget _buildBody(BuildContext context, List<SupplierEntity> data) {
     List<Widget> tabs = [];
     List<Widget> pages = [];
+    int quantitySuppliers = 0;
 
     for (int i = 0; i < data.length; i++) {
+      if (i == 3) {
+        quantitySuppliers = i;
+        break;
+      }
       String subtitle =
           data[i].isBetterOption ? "Melhor Opção" : "Opção ${i + 1}";
       tabs.add(
@@ -68,7 +71,7 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
     }
 
     return DefaultTabController(
-      length: data.length,
+      length: quantitySuppliers,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Análise de preços"),
@@ -113,6 +116,9 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                       .toStringAsFixed(2)
                       .replaceAll(".", ",");
 
+                  bool hasDescription =
+                      supplier.products[index].description != null;
+
                   return SizedBox(
                     width: double.maxFinite,
                     child: Row(
@@ -125,16 +131,15 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                             children: [
                               Text(
                                 supplier.products[index].name,
-                                style: AppText.h5(
-                                  AppColors.primaryDark,
-                                ),
+                                style: hasDescription
+                                    ? AppText.h5(AppColors.primaryDark)
+                                    : AppText.p(AppColors.black01),
                               ),
-                              Text(
-                                supplier.products[index].description ?? "",
-                                style: AppText.p(
-                                  AppColors.black03,
+                              if (hasDescription)
+                                Text(
+                                  supplier.products[index].description ?? "",
+                                  style: AppText.p(AppColors.black03),
                                 ),
-                              ),
                             ],
                           ),
                         ),
