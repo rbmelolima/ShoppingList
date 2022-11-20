@@ -61,8 +61,8 @@ class ProductModel {
   });
 
   final String nome;
-  final String descricao;
-  final int quantidade;
+  final String? descricao;
+  final double quantidade;
   final double precoUnitario;
 
   factory ProductModel.fromJson(String str) => ProductModel.fromMap(json.decode(str));

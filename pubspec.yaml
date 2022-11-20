@@ -24,6 +24,7 @@ dependencies:
   crypto:
   share_plus: 4.4.0
   lottie: ^1.4.3
+  flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +33,12 @@ dev_dependencies:
   faker:
   mocktail:
   test: ^1.21.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true

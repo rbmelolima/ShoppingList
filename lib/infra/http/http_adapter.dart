@@ -28,7 +28,7 @@ class HttpAdapter implements HttpClient {
       } else {
         throw Exception('Invalid method: $method');
       }
-      response = await futureResponse.timeout(const Duration(seconds: 10));
+      response = await futureResponse.timeout(const Duration(seconds: 20));
     } catch (error) {
       throw HttpError.serverError;
     }

@@ -34,13 +34,14 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
         }
 
         if (snapshot.hasError) {
-          return Container();
+          log(snapshot.error.toString());
+          return const ErrorOnAnalysis();
         }
 
         if (snapshot.hasData) {
           return _buildBody(context, snapshot.data!);
         } else {
-          return Container();
+          return const ErrorOnAnalysis();
         }
       },
     );
@@ -113,6 +114,9 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                       .toStringAsFixed(2)
                       .replaceAll(".", ",");
 
+                  bool hasDescription =
+                      supplier.products[index].description != null;
+
                   return SizedBox(
                     width: double.maxFinite,
                     child: Row(
@@ -125,16 +129,15 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                             children: [
                               Text(
                                 supplier.products[index].name,
-                                style: AppText.h5(
-                                  AppColors.primaryDark,
-                                ),
+                                style: hasDescription
+                                    ? AppText.h5(AppColors.primaryDark)
+                                    : AppText.p(AppColors.black01),
                               ),
-                              Text(
-                                supplier.products[index].description ?? "",
-                                style: AppText.p(
-                                  AppColors.black03,
+                              if (hasDescription)
+                                Text(
+                                  supplier.products[index].description ?? "",
+                                  style: AppText.p(AppColors.black03),
                                 ),
-                              ),
                             ],
                           ),
                         ),

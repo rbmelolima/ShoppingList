@@ -7,8 +7,6 @@ import 'package:shoppinglist/domain/entities/supplier_entity.dart';
 import 'package:shoppinglist/domain/usecases/price_analysis_usecase.dart';
 import 'package:shoppinglist/utils/generate_md5.dart';
 
-import '../mock/price_analysis.dart';
-
 class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
   final HttpClient httpClient;
 
@@ -17,23 +15,26 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
   @override
   Future<List<SupplierEntity>> analysis(ShoppingListEntity shoppingList) async {
     try {
-      /* 
-      const String urlAPI = "";
-      var response = await httpClient.request(
-        url: urlAPI,
-        method: "post",
-        body: _makeBodySearch(shoppingList),
-      ); 
-      */
+      const String endpoint =
+          "https://listadecomprasinteligenteapi20221019090206.azurewebsites.net/ListaCompras";
 
-      var listSuppliersModel = ShoppingListSupplierModel.fromMap(priceAnalysisResponse);
+      var body = _makeBodySearch(shoppingList);
+
+      var response = await httpClient.request(
+        url: endpoint,
+        method: "post",
+        body: body,
+      );
+
+      var listSuppliersModel = ShoppingListSupplierModel.fromMap(response);
 
       List<SupplierEntity> list = [];
       list.add(
         SupplierEntity(
           name: listSuppliersModel.fornecedorMaisCompetitivo.nome,
           isBetterOption: true,
-          products: listSuppliersModel.fornecedorMaisCompetitivo.produtos.map((product) {
+          products: listSuppliersModel.fornecedorMaisCompetitivo.produtos
+              .map((product) {
             return ProductEntity(
               id: generateMd5(product.nome),
               name: product.nome,
@@ -72,16 +73,45 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
 
   Map<String, dynamic> _makeBodySearch(ShoppingListEntity shoppingList) {
     return {
-      "produtos": shoppingList.products
-          .map(
-            (e) => {
-              "nome": e.name,
-              "quantidade": e.measure,
-              "unidadeMedida": e.unitOfMeasurement,
-              "descricao": " ${e.description} ${e.brand}",
-            },
-          )
-          .toList(),
+      "produtos": shoppingList.products.map(
+        (product) {
+          String quantity = product.measure ?? "1";
+          String description = "";
+          if (product.brand != null) description += product.brand.toString();
+          if (product.description != null) {
+            description += " ${product.description}";
+          }
+
+          return {
+            "nome": product.name,
+            "quantidade": quantity,
+            "unidadeMedida":
+                _parsingUnitOfMeasurement(product.unitOfMeasurement),
+            "descricao": description,
+          };
+        },
+      ).toList(),
     };
+  }
+
+  String _parsingUnitOfMeasurement(String? unit) {
+    if (unit == null) return "Un";
+
+    Map<String, dynamic> quantifiers = {
+      "unidade(s)": "Un",
+      "ml": "ml",
+      "l": "L",
+      "mg": "mg",
+      "g": "g",
+      "kg": "Kg",
+      "caixa(s)": "Un",
+      "garrafa(s)": "Un",
+      "lata(s)": "Un",
+      "pacote(s)": "Un",
+      "galão(ões)": "Un",
+      "": "",
+    };
+
+    return quantifiers[unit];
   }
 }

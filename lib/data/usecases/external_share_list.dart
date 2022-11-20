@@ -55,6 +55,8 @@ class ExternalShareList implements ShareListUsecase, ShareSupplierUsecase {
       String products = "";
 
       for (var prod in supplier.products) {
+        var price = prod.unitPrice!.toStringAsFixed(2).replaceAll(".", ",");
+
         String temp = "${prod.name}\n";
         if (prod.brand != null) {
           temp += "- Marca: ${prod.brand}\n";
@@ -66,16 +68,15 @@ class ExternalShareList implements ShareListUsecase, ShareSupplierUsecase {
           temp += "- Qtd: ${prod.measure} ${prod.unitOfMeasurement}\n";
         }
         if (prod.unitPrice != null) {
-          temp += "- Preço: R\$ ${prod.unitPrice}\n";
+          temp += "- Preço: R\$ $price\n";
         }
         temp += "\n";
         products += temp;
       }
 
       String content = supplier.name;
-
-      content += "\n\n-----\n\n";
-      content += "Produtos: \n";
+      content += "\n-----\n";
+      content += "Produtos: \n\n";
       content += products;
 
       await shareAdapter.share(content);

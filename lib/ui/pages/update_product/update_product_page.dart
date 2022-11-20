@@ -67,7 +67,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
               preventNavigation(
                 context,
                 title: 'Alerta',
-                content: "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
+                content:
+                    "Você ainda não terminou de editar o produto.\n\nDeseja realmente sair?",
               );
             } else {
               if (widget.presenter.wasEdited) Navigator.pop(context, true);
@@ -142,7 +143,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                       ),
                     ),
                     child: DropdownBtn(
-                      items: quantifiers.map<DropdownMenuItem<String>>((String value) {
+                      items: quantifiers
+                          .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
