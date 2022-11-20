@@ -75,9 +75,8 @@ class ExternalShareList implements ShareListUsecase, ShareSupplierUsecase {
       }
 
       String content = supplier.name;
-
-      content += "\n\n-----\n\n";
-      content += "Produtos: \n";
+      content += "\n-----\n";
+      content += "Produtos: \n\n";
       content += products;
 
       await shareAdapter.share(content);

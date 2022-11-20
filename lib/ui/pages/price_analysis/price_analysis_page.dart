@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/shopping_list_entity.dart';
 import 'package:shoppinglist/domain/entities/supplier_entity.dart';
@@ -32,6 +34,7 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
         }
 
         if (snapshot.hasError) {
+          log(snapshot.error.toString());
           return const ErrorOnAnalysis();
         }
 
@@ -47,13 +50,8 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
   Widget _buildBody(BuildContext context, List<SupplierEntity> data) {
     List<Widget> tabs = [];
     List<Widget> pages = [];
-    int quantitySuppliers = 0;
 
     for (int i = 0; i < data.length; i++) {
-      if (i == 3) {
-        quantitySuppliers = i;
-        break;
-      }
       String subtitle =
           data[i].isBetterOption ? "Melhor Opção" : "Opção ${i + 1}";
       tabs.add(
@@ -71,7 +69,7 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
     }
 
     return DefaultTabController(
-      length: quantitySuppliers,
+      length: data.length,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Análise de preços"),

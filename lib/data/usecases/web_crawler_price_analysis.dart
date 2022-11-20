@@ -73,24 +73,33 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
 
   Map<String, dynamic> _makeBodySearch(ShoppingListEntity shoppingList) {
     return {
-      "produtos": shoppingList.products
-          .map(
-            (e) => {
-              "nome": e.name,
-              "quantidade": e.measure,
-              "unidadeMedida": _parsingUnitOfMeasurement(e.unitOfMeasurement),
-              "descricao": "${e.brand} ${e.description}",
-            },
-          )
-          .toList(),
+      "produtos": shoppingList.products.map(
+        (product) {
+          String quantity = product.measure ?? "1";
+          String description = "";
+          if (product.brand != null) description += product.brand.toString();
+          if (product.description != null) {
+            description += " ${product.description}";
+          }
+
+          return {
+            "nome": product.name,
+            "quantidade": quantity,
+            "unidadeMedida":
+                _parsingUnitOfMeasurement(product.unitOfMeasurement),
+            "descricao": description,
+          };
+        },
+      ).toList(),
     };
   }
 
   String _parsingUnitOfMeasurement(String? unit) {
+    if (unit == null) return "Un";
+
     Map<String, dynamic> quantifiers = {
       "unidade(s)": "Un",
       "ml": "ml",
-      
       "l": "L",
       "mg": "mg",
       "g": "g",

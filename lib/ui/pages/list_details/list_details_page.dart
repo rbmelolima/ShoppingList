@@ -58,6 +58,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context, true);
+
         return true;
       },
       child: Scaffold(
@@ -71,67 +72,69 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
             onBack: () => Navigator.pop(context, true),
           ),
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              _buildHeader(context),
-              if (_list.products.isEmpty) ...[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  child: const NotFoundProducts(),
-                )
-              ] else ...[
-                ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: _list.products.length,
-                  itemBuilder: (context, index) {
-                    return ResumeProductCard(
-                      product: _list.products[index],
-                      idList: _list.id,
-                      onUpdatePage: () async {
-                        var updatedList = await widget.presenter.getList();
-                        if (updatedList != null) {
-                          setState(() {
-                            _list = updatedList;
-                          });
-                        }
-                      },
-                    );
-                  },
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  width: double.maxFinite,
-                  child: TextButton(
-                    onPressed: () async {
-                      await AppNavigation.navigateToPriceAnalysis(
-                        context,
-                        widget.list,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            await AppNavigation.navigateToPriceAnalysis(
+              context,
+              widget.list,
+            );
+          },
+          backgroundColor: AppColors.secundaryDark,
+          label: const Text("Buscar preços"),
+        ),
+        body: GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                _buildHeader(context),
+                _buildAddProductsField(),
+                if (_list.products.isEmpty) ...[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: const NotFoundProducts(),
+                  )
+                ] else ...[
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _list.products.length,
+                    itemBuilder: (context, index) {
+                      return ResumeProductCard(
+                        product: _list.products[index],
+                        idList: _list.id,
+                        onUpdatePage: () async {
+                          var updatedList = await widget.presenter.getList();
+                          if (updatedList != null) {
+                            setState(() {
+                              _list = updatedList;
+                            });
+                          }
+                        },
                       );
                     },
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppColors.secundaryDark,
-                      padding: const EdgeInsets.all(16),
-                    ),
-                    child: Text("buscar menores preços".toUpperCase()),
                   ),
-                ),
+                ],
+                _buildWhiteSpace(),
               ],
-              _buildWhiteSpace(),
-            ],
+            ),
           ),
         ),
-        bottomSheet: _buildBottomSheet(),
       ),
     );
   }
 
-  Widget _buildBottomSheet() {
+  Widget _buildAddProductsField() {
     return Container(
       constraints: const BoxConstraints(maxHeight: 96),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 24),
       color: AppColors.backgroundScaffold,
       child: Row(
         children: [
@@ -144,7 +147,10 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
               ),
               textInputAction: TextInputAction.done,
               textCapitalization: TextCapitalization.words,
-              onSubmitted: (_) => () {},
+              onSubmitted: null,
+              onEditingComplete: () {
+                onAddProduct();
+              },
               controller: widget.presenter.createProduct,
               maxLines: 1,
               onChanged: (_) {
@@ -204,6 +210,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
       productTextFieldFocus.requestFocus();
     } catch (e) {
       log("Erro ao adicionar um produto.");
+      productTextFieldFocus.unfocus();
     } finally {
       setState(() {
         createButtonState = ButtonState.enable;
@@ -212,7 +219,7 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
     }
   }
 
-  Widget _buildWhiteSpace() => Container(height: 76);
+  Widget _buildWhiteSpace() => Container(height: 52);
 
   Widget _buildHeader(BuildContext context) {
     return Container(

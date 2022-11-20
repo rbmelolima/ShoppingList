@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shoppinglist/ui/style/style.dart';
 
 class ErrorOnLoading extends StatelessWidget {
-  final Function reload;
+  final void Function()? reload;
 
   const ErrorOnLoading({
     Key? key,
@@ -25,7 +25,7 @@ class ErrorOnLoading extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 16),
               child: TextButton.icon(
-                onPressed: () {},
+                onPressed: reload,
                 style: TextButton.styleFrom(
                   foregroundColor: AppColors.secundaryDark,
                   padding: const EdgeInsets.all(12),
