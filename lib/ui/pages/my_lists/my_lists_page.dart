@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shoppinglist/domain/entities/entities.dart';
 import 'package:shoppinglist/main/routes/navigation.dart';
@@ -7,9 +9,21 @@ import 'package:shoppinglist/ui/style/style.dart';
 
 import 'components/components.dart';
 
-class MyListsPage extends StatelessWidget {
+class MyListsPage extends StatefulWidget {
   final MyListsPresenter presenter;
   const MyListsPage({Key? key, required this.presenter}) : super(key: key);
+
+  @override
+  State<MyListsPage> createState() => _MyListsPageState();
+}
+
+class _MyListsPageState extends State<MyListsPage> {
+  @override
+  void initState() {
+    log("Carregando as listas");
+    widget.presenter.getAllLists();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,23 +35,23 @@ class MyListsPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              presenter.getAllLists();
+              widget.presenter.getAllLists();
             },
-            icon: const Icon(
-              Icons.refresh,
-            ),
+            icon: const Icon(Icons.refresh),
           )
         ],
       ),
       body: Builder(
         builder: (context) {
-          presenter.getAllLists();
+          widget.presenter.getAllLists();
 
           return StreamBuilder<List<ShoppingListEntity>?>(
-            stream: presenter.listsStream,
+            stream: widget.presenter.listsStream,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Container(); //Error Widget
+                return ErrorOnLoading(
+                  reload: () async => await widget.presenter.getAllLists(),
+                );
               }
 
               if (snapshot.hasData) {
@@ -62,18 +76,20 @@ class MyListsPage extends StatelessWidget {
                               return ResumeListCard(
                                 list: snapshot.data![index],
                                 onDelete: () async {
-                                  await presenter.delete(
+                                  await widget.presenter.delete(
                                     snapshot.data![index].id,
                                   );
                                 },
                                 onClone: () async {
-                                  await presenter.clone(snapshot.data![index]);
+                                  await widget.presenter
+                                      .clone(snapshot.data![index]);
                                 },
                                 onShare: () async {
-                                  await presenter.share(snapshot.data![index]);
+                                  await widget.presenter
+                                      .share(snapshot.data![index]);
                                 },
                                 onUpdatePage: () async {
-                                  await presenter.getAllLists();
+                                  await widget.presenter.getAllLists();
                                 },
                               );
                             },
@@ -109,7 +125,7 @@ class MyListsPage extends StatelessWidget {
   Widget _buildWhiteSpace() => Container(height: 96);
 
   dynamic onCreateList(BuildContext context) {
-    presenter.onCleanText();
+    widget.presenter.onCleanText();
 
     return showModalBottomSheet(
       isScrollControlled: true,
@@ -146,10 +162,10 @@ class MyListsPage extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       textCapitalization: TextCapitalization.words,
                       onSubmitted: (_) => onCloseKeyboard(context),
-                      controller: presenter.createListName,
+                      controller: widget.presenter.createListName,
                       maxLines: 1,
                       onChanged: (_) {
-                        if (presenter.createListName.text.isNotEmpty) {
+                        if (widget.presenter.createListName.text.isNotEmpty) {
                           setState(() {
                             btnState = ButtonState.enable;
                           });
@@ -175,13 +191,15 @@ class MyListsPage extends StatelessWidget {
                       return SizedBox(
                         width: double.maxFinite,
                         child: ElevatedButton(
-                          onPressed: btnState == ButtonState.enable || presenter.createListName.text.isNotEmpty
+                          onPressed: btnState == ButtonState.enable ||
+                                  widget
+                                      .presenter.createListName.text.isNotEmpty
                               ? () async {
                                   try {
                                     setState(() {
                                       btnState = ButtonState.loading;
                                     });
-                                    var list = await presenter.create();
+                                    var list = await widget.presenter.create();
                                     setState(() {
                                       btnState = ButtonState.enable;
                                     });

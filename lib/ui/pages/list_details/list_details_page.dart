@@ -55,33 +55,37 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundScaffold,
-        elevation: 0,
-        titleSpacing: 0,
-        leadingWidth: 40,
-        centerTitle: false,
-        leading: LeadingBtn(
-          onBack: () => Navigator.pop(context, true),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, true);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.backgroundScaffold,
+          elevation: 0,
+          titleSpacing: 0,
+          leadingWidth: 40,
+          centerTitle: false,
+          leading: LeadingBtn(
+            onBack: () => Navigator.pop(context, true),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _buildHeader(context),
-            if (_list.products.isEmpty) ...[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: const NotFoundProducts(),
-              )
-            ] else ...[
-              Expanded(
-                child: ListView.builder(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              _buildHeader(context),
+              if (_list.products.isEmpty) ...[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: const NotFoundProducts(),
+                )
+              ] else ...[
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   itemCount: _list.products.length,
-                  /*  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(), */
                   itemBuilder: (context, index) {
                     return ResumeProductCard(
                       product: _list.products[index],
@@ -97,28 +101,30 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
                     );
                   },
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 8),
-                width: double.maxFinite,
-                child: TextButton(
-                  onPressed: () async {
-                    await AppNavigation.navigateToPriceAnalysis(
-                        context, widget.list);
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.secundaryDark,
-                    padding: const EdgeInsets.all(16),
+                Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  width: double.maxFinite,
+                  child: TextButton(
+                    onPressed: () async {
+                      await AppNavigation.navigateToPriceAnalysis(
+                        context,
+                        widget.list,
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.secundaryDark,
+                      padding: const EdgeInsets.all(16),
+                    ),
+                    child: Text("buscar menores preços".toUpperCase()),
                   ),
-                  child: Text("buscar menores preços".toUpperCase()),
                 ),
-              ),
+              ],
+              _buildWhiteSpace(),
             ],
-            _buildWhiteSpace(),
-          ],
+          ),
         ),
+        bottomSheet: _buildBottomSheet(),
       ),
-      bottomSheet: _buildBottomSheet(),
     );
   }
 
