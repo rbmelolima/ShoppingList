@@ -39,7 +39,6 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
               id: generateMd5(product.nome),
               name: product.nome,
               unitPrice: product.precoUnitario,
-              description: product.descricao,
             );
           }).toList(),
           totalPrice: listSuppliersModel.fornecedorMaisCompetitivo.precoTotal,
@@ -57,7 +56,6 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
                 id: generateMd5(product.nome),
                 name: product.nome,
                 unitPrice: product.precoUnitario,
-                description: product.descricao,
               );
             }).toList(),
           ),
@@ -75,7 +73,6 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
     return {
       "produtos": shoppingList.products.map(
         (product) {
-          String quantity = product.measure ?? "1";
           String description = "";
           if (product.brand != null) description += product.brand.toString();
           if (product.description != null) {
@@ -83,35 +80,12 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
           }
 
           return {
-            "nome": product.name,
-            "quantidade": quantity,
-            "unidadeMedida":
-                _parsingUnitOfMeasurement(product.unitOfMeasurement),
-            "descricao": description,
+            "nome": "${product.name} $description",
+            "quantidade":
+                product.unitOfMeasurement == "unidade(s)" ? product.measure : 1,
           };
         },
       ).toList(),
     };
-  }
-
-  String _parsingUnitOfMeasurement(String? unit) {
-    if (unit == null) return "Un";
-
-    Map<String, dynamic> quantifiers = {
-      "unidade(s)": "Un",
-      "ml": "ml",
-      "l": "L",
-      "mg": "mg",
-      "g": "g",
-      "kg": "Kg",
-      "caixa(s)": "Un",
-      "garrafa(s)": "Un",
-      "lata(s)": "Un",
-      "pacote(s)": "Un",
-      "galão(ões)": "Un",
-      "": "",
-    };
-
-    return quantifiers[unit];
   }
 }
