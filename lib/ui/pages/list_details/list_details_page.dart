@@ -72,15 +72,18 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
             onBack: () => Navigator.pop(context, true),
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            await AppNavigation.navigateToPriceAnalysis(
-              context,
-              widget.list,
-            );
-          },
-          backgroundColor: AppColors.secundaryDark,
-          label: const Text("Buscar preços"),
+        floatingActionButton: Visibility(
+          visible: MediaQuery.of(context).viewInsets.bottom == 0,
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              await AppNavigation.navigateToPriceAnalysis(
+                context,
+                widget.list,
+              );
+            },
+            backgroundColor: AppColors.secundaryDark,
+            label: const Text("Buscar preços"),
+          ),
         ),
         body: GestureDetector(
           onTap: () {
