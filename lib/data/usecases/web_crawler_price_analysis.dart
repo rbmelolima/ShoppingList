@@ -9,19 +9,17 @@ import 'package:shoppinglist/utils/generate_md5.dart';
 
 class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
   final HttpClient httpClient;
+  final String apiEndpoint;
 
-  WebCrawlerPriceAnalysis(this.httpClient);
+  WebCrawlerPriceAnalysis(this.httpClient, this.apiEndpoint);
 
   @override
   Future<List<SupplierEntity>> analysis(ShoppingListEntity shoppingList) async {
     try {
-      const String endpoint =
-          "https://listadecomprasinteligenteapi20221019090206.azurewebsites.net/ListaCompras";
-
       var body = _makeBodySearch(shoppingList);
 
       var response = await httpClient.request(
-        url: endpoint,
+        url: apiEndpoint,
         method: "post",
         body: body,
       );
@@ -74,9 +72,14 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
       "produtos": shoppingList.products.map(
         (product) {
           String description = "";
-          if (product.brand != null) description += product.brand.toString();
+
+          if (product.brand != null) {
+            description += product.brand.toString();
+          }
+
           if (product.description != null) {
-            description += " ${product.description}";
+            if (product.brand != null) description += " ";
+            description += "${product.description}";
           }
 
           return {

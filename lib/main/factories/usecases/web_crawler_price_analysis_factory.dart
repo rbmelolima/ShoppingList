@@ -3,5 +3,8 @@ import 'package:shoppinglist/domain/usecases/price_analysis_usecase.dart';
 import 'package:shoppinglist/main/factories/http/http.dart';
 
 PriceAnalysisUsecase makeWebCrawlerPriceAnalysis() {
-  return WebCrawlerPriceAnalysis(makeHttpAdapter());
+  return WebCrawlerPriceAnalysis(
+    makeHttpAdapter(),
+    "https://listadecomprasinteligenteapi20221019090206.azurewebsites.net/ListaCompras",
+  );
 }
