@@ -73,7 +73,8 @@ class _ListDetailsPageState extends State<ListDetailsPage> {
           ),
         ),
         floatingActionButton: Visibility(
-          visible: MediaQuery.of(context).viewInsets.bottom == 0,
+          visible: MediaQuery.of(context).viewInsets.bottom == 0 &&
+              _list.products.length > 1,
           child: FloatingActionButton.extended(
             onPressed: () async {
               await AppNavigation.navigateToPriceAnalysis(
