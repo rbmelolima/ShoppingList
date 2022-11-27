@@ -176,7 +176,7 @@ class _PriceAnalysisPageState extends State<PriceAnalysisPage> {
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Text(
-                      supplier.totalPrice,
+                      supplier.totalPrice.replaceAll(".", ","),
                       style: AppText.h4(AppColors.secundaryDark),
                     )
                   ],

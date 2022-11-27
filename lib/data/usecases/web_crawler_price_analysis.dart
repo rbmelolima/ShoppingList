@@ -9,19 +9,17 @@ import 'package:shoppinglist/utils/generate_md5.dart';
 
 class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
   final HttpClient httpClient;
+  final String apiEndpoint;
 
-  WebCrawlerPriceAnalysis(this.httpClient);
+  WebCrawlerPriceAnalysis(this.httpClient, this.apiEndpoint);
 
   @override
   Future<List<SupplierEntity>> analysis(ShoppingListEntity shoppingList) async {
     try {
-      const String endpoint =
-          "https://listadecomprasinteligenteapi20221019090206.azurewebsites.net/ListaCompras";
-
       var body = _makeBodySearch(shoppingList);
 
       var response = await httpClient.request(
-        url: endpoint,
+        url: apiEndpoint,
         method: "post",
         body: body,
       );
@@ -39,7 +37,6 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
               id: generateMd5(product.nome),
               name: product.nome,
               unitPrice: product.precoUnitario,
-              description: product.descricao,
             );
           }).toList(),
           totalPrice: listSuppliersModel.fornecedorMaisCompetitivo.precoTotal,
@@ -57,7 +54,6 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
                 id: generateMd5(product.nome),
                 name: product.nome,
                 unitPrice: product.precoUnitario,
-                description: product.descricao,
               );
             }).toList(),
           ),
@@ -75,43 +71,24 @@ class WebCrawlerPriceAnalysis implements PriceAnalysisUsecase {
     return {
       "produtos": shoppingList.products.map(
         (product) {
-          String quantity = product.measure ?? "1";
           String description = "";
-          if (product.brand != null) description += product.brand.toString();
+
+          if (product.brand != null) {
+            description += product.brand.toString();
+          }
+
           if (product.description != null) {
-            description += " ${product.description}";
+            if (product.brand != null) description += " ";
+            description += "${product.description}";
           }
 
           return {
-            "nome": product.name,
-            "quantidade": quantity,
-            "unidadeMedida":
-                _parsingUnitOfMeasurement(product.unitOfMeasurement),
-            "descricao": description,
+            "nome": "${product.name} $description",
+            "quantidade":
+                product.unitOfMeasurement == "unidade(s)" ? product.measure : 1,
           };
         },
       ).toList(),
     };
-  }
-
-  String _parsingUnitOfMeasurement(String? unit) {
-    if (unit == null) return "Un";
-
-    Map<String, dynamic> quantifiers = {
-      "unidade(s)": "Un",
-      "ml": "ml",
-      "l": "L",
-      "mg": "mg",
-      "g": "g",
-      "kg": "Kg",
-      "caixa(s)": "Un",
-      "garrafa(s)": "Un",
-      "lata(s)": "Un",
-      "pacote(s)": "Un",
-      "galão(ões)": "Un",
-      "": "",
-    };
-
-    return quantifiers[unit];
   }
 }

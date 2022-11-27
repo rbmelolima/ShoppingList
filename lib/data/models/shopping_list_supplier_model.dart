@@ -9,13 +9,17 @@ class ShoppingListSupplierModel {
   final List<SupplierModel> fornecedores;
   final SupplierModel fornecedorMaisCompetitivo;
 
-  factory ShoppingListSupplierModel.fromJson(String str) => ShoppingListSupplierModel.fromMap(json.decode(str));
+  factory ShoppingListSupplierModel.fromJson(String str) =>
+      ShoppingListSupplierModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory ShoppingListSupplierModel.fromMap(Map<String, dynamic> json) => ShoppingListSupplierModel(
-        fornecedores: List<SupplierModel>.from(json["fornecedores"].map((x) => SupplierModel.fromMap(x))),
-        fornecedorMaisCompetitivo: SupplierModel.fromMap(json["fornecedorMaisCompetitivo"]),
+  factory ShoppingListSupplierModel.fromMap(Map<String, dynamic> json) =>
+      ShoppingListSupplierModel(
+        fornecedores: List<SupplierModel>.from(
+            json["fornecedores"].map((x) => SupplierModel.fromMap(x))),
+        fornecedorMaisCompetitivo:
+            SupplierModel.fromMap(json["fornecedorMaisCompetitivo"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -35,13 +39,15 @@ class SupplierModel {
   final List<ProductModel> produtos;
   final String precoTotal;
 
-  factory SupplierModel.fromJson(String str) => SupplierModel.fromMap(json.decode(str));
+  factory SupplierModel.fromJson(String str) =>
+      SupplierModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   factory SupplierModel.fromMap(Map<String, dynamic> json) => SupplierModel(
         nome: json["nome"],
-        produtos: List<ProductModel>.from(json["produtos"].map((x) => ProductModel.fromMap(x))),
+        produtos: List<ProductModel>.from(
+            json["produtos"].map((x) => ProductModel.fromMap(x))),
         precoTotal: json["precoTotal"],
       );
 
@@ -57,21 +63,20 @@ class ProductModel {
     required this.nome,
     required this.quantidade,
     required this.precoUnitario,
-    required this.descricao,
   });
 
   final String nome;
-  final String? descricao;
+
   final double quantidade;
   final double precoUnitario;
 
-  factory ProductModel.fromJson(String str) => ProductModel.fromMap(json.decode(str));
+  factory ProductModel.fromJson(String str) =>
+      ProductModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   factory ProductModel.fromMap(Map<String, dynamic> json) => ProductModel(
         nome: json["nome"],
-        descricao: json["descricao"],
         quantidade: json["quantidade"],
         precoUnitario: json["precoUnitario"].toDouble(),
       );
@@ -80,6 +85,5 @@ class ProductModel {
         "nome": nome,
         "quantidade": quantidade,
         "precoUnitario": precoUnitario,
-        "descricao": descricao,
       };
 }
