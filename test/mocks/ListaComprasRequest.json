@@ -1,9 +1,0 @@
-{
-  "produtos": [
-    {
-      "nome": "maçã",
-      "quantidade": 1,
-      "unidadeMedida": "Kg"
-    }
-  ]
-}
